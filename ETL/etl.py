@@ -2,7 +2,7 @@ import csv
 import mysql.connector
 import config
 from mysql.connector import errorcode
-
+import time
 # try:
 #     with open('../dataset/gun-violence-data_01-2013_03-2018.csv', newline='') as csvfile:
 #         reader = csv.DictReader(csvfile)
@@ -46,25 +46,20 @@ try:
                                    auth_plugin='mysql_native_password')
 
     cursor = cnx.cursor()
-    query = """DROP PROCEDURE IF EXISTS gun.generate_Dates;
-    DELIMITER |
-    CREATE PROCEDURE generate_Dates(date_start DATE, date_end DATE)
+    cursor.execute("DROP PROCEDURE IF EXISTS gun.generate_Dates;")
+    queryProc = """
+    CREATE PROCEDURE gun.generate_Dates(date_start DATE, date_end DATE)
     BEGIN
-      WHILE date_start <= date_end DO
-        INSERT INTO dim_date (date) VALUES (date_start);
-        SET date_start = date_add(date_start, INTERVAL 1 DAY);
-      END WHILE;
-    END;
-    |
-    DELIMITER ;
-    """ 
+	  WHILE date_start <= date_end DO
+		  INSERT INTO gun.dim_date (date) VALUES (date_start);
+		  SET date_start = date_add(date_start, INTERVAL 1 DAY);
+	  END WHILE;
+    END;"""
+    cursor.execute(queryProc)
+    query = "CALL gun.generate_Dates('2015-01-01','2020-11-30');" 
     cursor.execute(query)
-    cursor.close()
-    cnx.commit()
 
-    cursor = cnx.cursor() 
-    queryCall = "CALL gun.generate_Dates('2015-01-01','2020-11-30');"
-    cursor.execute(queryCall)
+    cnx.commit()
 except mysql.connector.Error as err:
   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
     print("Something is wrong with your user name or password")
