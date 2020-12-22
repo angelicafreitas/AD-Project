@@ -84,7 +84,6 @@ try:
 	  END WHILE;
     END;"""
     cursor.execute(queryProc)
-    #query =
     print(older_date)  
     cursor.execute(f'CALL gun_violence.generate_Dates("{older_date}","{newer_date}");')
 
