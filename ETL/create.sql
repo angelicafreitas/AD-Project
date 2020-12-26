@@ -28,13 +28,12 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `gun_violence`.`dim_participant_age`
+-- Table `gun_violence`.`dim_participant_age_group`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant_age` (
-  `dim_participant_age_id` INT NOT NULL,
-  `participant_age` INT NULL,
-  `participant_age_group` INT NULL,
-  PRIMARY KEY (`dim_participant_age_id`))
+CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant_age_group` (
+  `dim_participant_age_group_id` INT NOT NULL,
+  `class_age_group` VARCHAR(150) NULL,
+  PRIMARY KEY (`dim_participant_age_group_id`))
 ENGINE = InnoDB;
 
 
@@ -48,12 +47,13 @@ CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant` (
   `relationship` VARCHAR(45) NULL,
   `status` VARCHAR(45) NULL,
   `type` VARCHAR(45) NULL,
-  `dim_participant_age_id` INT NOT NULL,
+  `dim_participant_age_group_id` INT NOT NULL,
+  `age` INT NULL,
   PRIMARY KEY (`dim_participant_id`),
-  INDEX `fk_dim_participant_dim_participant_age1_idx` (`dim_participant_age_id` ASC) VISIBLE,
+  INDEX `fk_dim_participant_dim_participant_age1_idx` (`dim_participant_age_group_id` ASC) VISIBLE,
   CONSTRAINT `fk_dim_participant_dim_participant_age1`
-    FOREIGN KEY (`dim_participant_age_id`)
-    REFERENCES `gun_violence`.`dim_participant_age` (`dim_participant_age_id`)
+    FOREIGN KEY (`dim_participant_age_group_id`)
+    REFERENCES `gun_violence`.`dim_participant_age_group` (`dim_participant_age_group_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
