@@ -4,98 +4,126 @@ import config
 from mysql.connector import errorcode
 import time
 import datetime
+import re
 
 older_date = ''
 older_date_aux = 0
 newer_date = ''
 newer_date_aux = 900000
 
+#tratar do dataset
 try:
     with open('../dataset/gun-violence-data_01-2013_03-2018.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         i=0
+        j=0
+        print(f'Handling the dataset...')
         for row in reader:
-          incident_id = row['incident_id']
-          date = row['date']
-          
-          #To get newer and oldest date
-          diff = str(datetime.datetime.today()-datetime.datetime.strptime(date, '%Y-%m-%d'))
-          diff_days = int(diff.split(' ')[0])
-          if i==0:
-            older_date=date
-            older_date_aux = diff_days
-            newer_date=date
-            newer_date_aux = diff_days
-          else:
-            if diff_days > older_date_aux:
-              older_date_aux = diff_days
+          #Some ids weren't numbers and the date needs to be a date
+          if re.search("[0-9]+",row['incident_id']) and re.search("[0-9]+-[0-9]+-[0-9][1-9]",row['date']):
+            incident_id = row['incident_id']
+            date = row['date']
+            
+            #To get newer and oldest date
+            diff = str(datetime.datetime.today()-datetime.datetime.strptime(date, '%Y-%m-%d'))
+            diff_days = int(diff.split(' ')[0])
+            if i==0:
               older_date=date
-            if diff_days < newer_date_aux:
+              older_date_aux = diff_days
               newer_date=date
               newer_date_aux = diff_days
+            else:
+              if diff_days > older_date_aux:
+                older_date_aux = diff_days
+                older_date=date
+              if diff_days < newer_date_aux:
+                newer_date=date
+                newer_date_aux = diff_days
 
 
-          
-          
-          state = row['state']
-          city_or_county = row['city_or_county']
-          address = row['address']
-          n_killed = row['n_killed']
-          n_injured = row['n_injured']
-          gun_stolen = row['gun_stolen']
-          gun_type = row['gun_type']
-          incident_characteristics = row['incident_characteristics']
-          latitude = row['latitude']
-          location_description = row['location_description']
-          longitude = row['longitude']
-          n_guns_involved = row['n_guns_involved']
-          notes = row['notes']
-          participant_age = row['participant_age']
-          participant_age_group = row['participant_age_group']
-          participant_gender = row['participant_gender']
-          participant_name = row['participant_name']
-          participant_relationship = row['participant_relationship']
-          participant_status = row['participant_status']
-          participant_type = row['participant_type']
-          state_house_district = row['state_house_district']
-          state_senate_district  = row['state_senate_district']
-          i+=1 
-        print(f'Total lines {i}')
+            
+            
+            state = row['state']
+            city_or_county = row['city_or_county']
+            address = row['address']
+            n_killed = row['n_killed']
+            n_injured = row['n_injured']
+            gun_stolen = row['gun_stolen']
+            gun_type = row['gun_type']
+            incident_characteristics = row['incident_characteristics']
+            latitude = row['latitude']
+            location_description = row['location_description']
+            longitude = row['longitude']
+            n_guns_involved = row['n_guns_involved']
+            notes = row['notes']
+            participant_age = row['participant_age']
+            participant_age_group = row['participant_age_group']
+            participant_gender = row['participant_gender']
+            participant_name = row['participant_name']
+            participant_relationship = row['participant_relationship']
+            participant_status = row['participant_status']
+            participant_type = row['participant_type']
+            state_house_district = row['state_house_district']
+            state_senate_district  = row['state_senate_district']
+            i+=1
+          j+=1
+        print(f'Total lines {j}, meaningful lines {i}')
 except Exception as e:
     print(f'Hello -> {e}')
 
 print(f'Older date: {older_date} | Newer date {newer_date}')
+print("---------------------------------------------")
 
+#apagar schema se ja tiver e criar atraves do create.sql
 try:
     cnx = mysql.connector.connect(user=config.user,
                                    password=config.password,
                                    host=config.host,
-                                   database=config.database,
                                    auth_plugin='mysql_native_password')
-
     cursor = cnx.cursor()
-    cursor.execute("DROP PROCEDURE IF EXISTS gun_violence.generate_Dates;")
-    queryProc = """
-    CREATE PROCEDURE gun_violence.generate_Dates(date_start DATE, date_end DATE)
-    BEGIN
-	  WHILE date_start <= date_end DO
-		  INSERT INTO gun_violence.dim_date (date) VALUES (date_start);
-		  SET date_start = date_add(date_start, INTERVAL 1 DAY);
-	  END WHILE;
-    END;"""
-    cursor.execute(queryProc)
-    print(older_date)  
-    cursor.execute(f'CALL gun_violence.generate_Dates("{older_date}","{newer_date}");')
+    cursor.execute("DROP SCHEMA IF EXISTS gun_violence;")
+    print("Dropped schema gun_violence if existed")
+    
+    cnx._open_connection()
+    
+    print("---------------------------------------------")
 
-    cnx.commit()
+    print("Creating gun_violence schema")
+    with open('create.sql', 'r') as f:
+      cursor.execute(f.read(), multi=True)
+    print("gun_violence created")
+    
 except mysql.connector.Error as err:
   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
     print("Something is wrong with your user name or password")
-  elif err.errno == errorcode.ER_BAD_DB_ERROR:
-    print("Database does not exist")
   else:
     print(err)
 else:
   cnx.close()
+
+print("---------------------------------------------")
+
+#popular gun_violence
+cnx = mysql.connector.connect(user=config.user,
+                                   password=config.password,
+                                   host=config.host,
+                                   database=config.database,
+                                   auth_plugin='mysql_native_password')
+print("Populating dim date...")
+cursor = cnx.cursor()
+cursor.execute("DROP PROCEDURE IF EXISTS gun_violence.generate_Dates;")
+queryProc = """
+    CREATE PROCEDURE gun_violence.generate_Dates(date_start DATE, date_end DATE)
+    BEGIN
+	  WHILE date_start <= date_end DO
+		  INSERT INTO gun_violence.dim_date (date, day, month,year) VALUES (date_start,day(date_start),month(date_start),year(date_start));
+		  SET date_start = date_add(date_start, INTERVAL 1 DAY);
+	  END WHILE;
+    END;"""
+cursor.execute(queryProc)  
+cursor.execute(f'CALL gun_violence.generate_Dates("{older_date}","{newer_date}");')
+cnx.commit()
+print("dim_date populated")
+cnx.close()
 
 
