@@ -42,7 +42,7 @@ ENGINE = InnoDB;
 -- Table `gun_violence`.`dim_state_district`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_state_district` (
-  `dim_state_district_id` INT NOT NULL,
+  `dim_state_district_id` INT NOT NULL AUTO_INCREMENT,
   `senate` INT NULL,
   `house` INT NULL,
   PRIMARY KEY (`dim_state_district_id`))
