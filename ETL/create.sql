@@ -28,49 +28,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `gun_violence`.`dim_participant_age_group`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant_age_group` (
-  `dim_participant_age_group_id` INT NOT NULL,
-  `class_age_group` VARCHAR(150) NULL,
-  PRIMARY KEY (`dim_participant_age_group_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `gun_violence`.`dim_participant`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant` (
-  `dim_participant_id` INT NOT NULL,
-  `gender` VARCHAR(45) NULL,
-  `name` VARCHAR(150) NULL,
-  `relationship` VARCHAR(45) NULL,
-  `status` VARCHAR(45) NULL,
-  `type` VARCHAR(45) NULL,
-  `dim_participant_age_group_id` INT NOT NULL,
-  `age` INT NULL,
-  PRIMARY KEY (`dim_participant_id`),
-  INDEX `fk_dim_participant_dim_participant_age1_idx` (`dim_participant_age_group_id` ASC) VISIBLE,
-  CONSTRAINT `fk_dim_participant_dim_participant_age1`
-    FOREIGN KEY (`dim_participant_age_group_id`)
-    REFERENCES `gun_violence`.`dim_participant_age_group` (`dim_participant_age_group_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `gun_violence`.`dim_gun`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_gun` (
-  `dim_gun_id` INT NOT NULL,
-  `gun_type` VARCHAR(45) NULL,
-  `gun_stolen` INT NULL,
-  PRIMARY KEY (`dim_gun_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `gun_violence`.`dim_incident_info`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_incident_info` (
@@ -96,7 +53,7 @@ ENGINE = InnoDB;
 -- Table `gun_violence`.`dim_location`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_location` (
-  `dim_location_id` INT NOT NULL,
+  `dim_location_id` INT NOT NULL AUTO_INCREMENT,
   `city_or_county` VARCHAR(45) NULL,
   `state` VARCHAR(45) NULL,
   `latitude` FLOAT NULL,
@@ -122,30 +79,16 @@ CREATE TABLE IF NOT EXISTS `gun_violence`.`facts_gun_incident` (
   `n_killed` INT NULL,
   `n_injured` INT NULL,
   `n_guns_involved` INT NULL,
-  `dim_participant_id` INT NOT NULL,
   `dim_date_id` INT NOT NULL,
-  `dim_gun_id` INT NOT NULL,
   `dim_incident_info_id` INT NOT NULL,
   `dim_location_id` INT NOT NULL,
   PRIMARY KEY (`incident_id`),
-  INDEX `fk_facts_gun_incident_dim_participant_idx` (`dim_participant_id` ASC) VISIBLE,
   INDEX `fk_facts_gun_incident_dim_date1_idx` (`dim_date_id` ASC) VISIBLE,
-  INDEX `fk_facts_gun_incident_dim_gun1_idx` (`dim_gun_id` ASC) VISIBLE,
   INDEX `fk_facts_gun_incident_dim_incident_info1_idx` (`dim_incident_info_id` ASC) VISIBLE,
   INDEX `fk_facts_gun_incident_dim_location1_idx` (`dim_location_id` ASC) VISIBLE,
-  CONSTRAINT `fk_facts_gun_incident_dim_participant`
-    FOREIGN KEY (`dim_participant_id`)
-    REFERENCES `gun_violence`.`dim_participant` (`dim_participant_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_facts_gun_incident_dim_date1`
     FOREIGN KEY (`dim_date_id`)
     REFERENCES `gun_violence`.`dim_date` (`dim_date_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_facts_gun_incident_dim_gun1`
-    FOREIGN KEY (`dim_gun_id`)
-    REFERENCES `gun_violence`.`dim_gun` (`dim_gun_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_facts_gun_incident_dim_incident_info1`
@@ -156,6 +99,63 @@ CREATE TABLE IF NOT EXISTS `gun_violence`.`facts_gun_incident` (
   CONSTRAINT `fk_facts_gun_incident_dim_location1`
     FOREIGN KEY (`dim_location_id`)
     REFERENCES `gun_violence`.`dim_location` (`dim_location_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `gun_violence`.`dim_gun`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_gun` (
+  `dim_gun_id` INT NOT NULL AUTO_INCREMENT,
+  `gun_type` VARCHAR(45) NULL,
+  `gun_stolen` INT NULL,
+  `facts_gun_incident_incident_id` INT NOT NULL,
+  PRIMARY KEY (`dim_gun_id`),
+  INDEX `fk_dim_gun_facts_gun_incident1_idx` (`facts_gun_incident_incident_id` ASC) VISIBLE,
+  CONSTRAINT `fk_dim_gun_facts_gun_incident1`
+    FOREIGN KEY (`facts_gun_incident_incident_id`)
+    REFERENCES `gun_violence`.`facts_gun_incident` (`incident_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `gun_violence`.`dim_participant_age_group`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant_age_group` (
+  `dim_participant_age_group_id` INT NOT NULL,
+  `class_age_group` VARCHAR(150) NULL,
+  PRIMARY KEY (`dim_participant_age_group_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `gun_violence`.`dim_participant`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant` (
+  `dim_participant_id` INT NOT NULL AUTO_INCREMENT,
+  `gender` VARCHAR(45) NULL,
+  `name` VARCHAR(150) NULL,
+  `relationship` VARCHAR(45) NULL,
+  `status` VARCHAR(45) NULL,
+  `type` VARCHAR(45) NULL,
+  `dim_participant_age_group_id` INT NOT NULL,
+  `age` INT NULL,
+  `facts_gun_incident_incident_id` INT NOT NULL,
+  PRIMARY KEY (`dim_participant_id`),
+  INDEX `fk_dim_participant_dim_participant_age1_idx` (`dim_participant_age_group_id` ASC) VISIBLE,
+  INDEX `fk_dim_participant_facts_gun_incident1_idx` (`facts_gun_incident_incident_id` ASC) VISIBLE,
+  CONSTRAINT `fk_dim_participant_dim_participant_age1`
+    FOREIGN KEY (`dim_participant_age_group_id`)
+    REFERENCES `gun_violence`.`dim_participant_age_group` (`dim_participant_age_group_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_dim_participant_facts_gun_incident1`
+    FOREIGN KEY (`facts_gun_incident_incident_id`)
+    REFERENCES `gun_violence`.`facts_gun_incident` (`incident_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
