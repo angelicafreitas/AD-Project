@@ -11,8 +11,6 @@ older_date_aux = 0
 newer_date = ''
 newer_date_aux = 900000
 
-max_senate = 0
-max_house = 0
 
 #apagar schema se ja tiver e criar atraves do create.sql
 try:
@@ -86,8 +84,8 @@ CREATE TEMPORARY TABLE IF NOT EXISTS `gun_violence`.`aux` (
   `participant_relationship` TEXT NULL,
   `participant_status` TEXT NULL,
   `participant_type` TEXT NULL,
-  `state_house_district` TEXT NULL,
-  `state_senate_district` TEXT NULL,
+  `state_house_district` INT NULL,
+  `state_senate_district` INT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 """)
@@ -144,15 +142,8 @@ try:
             participant_relationship = row['participant_relationship']
             participant_status = row['participant_status']
             participant_type = row['participant_type']
-            state_house_district = row['state_house_district']
-            state_senate_district  = row['state_senate_district']
-
-            if state_senate_district != "" and max_senate < int(state_senate_district):
-
-                max_senate = int(state_senate_district)
-            if state_house_district != "" and max_house < int(state_house_district):
-                max_house = int(state_house_district)
-
+            state_house_district = int(row['state_house_district']) if row['state_house_district'] != "" else "NULL" 
+            state_senate_district  = int(row['state_senate_district']) if row['state_senate_district'] != "" else "NULL" 
 
             cursor.execute(f' INSERT INTO gun_violence.aux (\n'
               f'incident_id, date, state, city_or_county, address, n_killed,\n'
@@ -171,7 +162,7 @@ try:
               f'"{participant_age_group}", "{participant_gender}",\n'
               f'"{participant_name}", "{participant_relationship}",\n'
               f'"{participant_status}", "{participant_type}",\n'
-              f'"{state_house_district}", "{state_senate_district}");'
+              f'{state_house_district}, {state_senate_district});'
             )
             i+=1
           j+=1
@@ -180,7 +171,6 @@ except Exception as e:
     print(f'Hello -> {e}')
 
 print(f'Older date: {older_date} | Newer date: {newer_date}')
-print(f'Max senate: {max_senate} | Max house: {max_house}')
 print("---------------------------------------------")
 
 print("Populating dim date...")
@@ -196,24 +186,11 @@ print("done")
 
 print("---------------------------------------------")
 print("Populating dim_state_district...")
-cursor.execute("DROP PROCEDURE IF EXISTS gun_violence.generate_state_district;")
 cursor.execute("""
-    CREATE PROCEDURE gun_violence.generate_state_district(senate INT, house INT)
-    BEGIN
-    declare i INT;
-    declare j INT;
-    set i=1;
-    set j=1;
-	  WHILE i <= senate DO
-		  WHILE j <= house DO
-			  INSERT INTO gun_violence.dim_state_district (senate, house) VALUES (i,j);
-        SET j = j+1;
-		  END WHILE;
-    SET i = i+1;
-    SET j = 1;
-	  END WHILE;
-END;""")
-cursor.execute(f'CALL gun_violence.generate_state_district({max_senate},{max_house});')
+    INSERT INTO gun_violence.dim_state_district (dim_state_district_id,senate,house)
+    SELECT incident_id,state_senate_district, state_house_district
+    FROM gun_violence.aux
+""")
 print("done")
 
 cursor.close()
@@ -222,17 +199,28 @@ cnx.commit()
 cursor=cnx.cursor()
 print("---------------------------------------------")
 print("Populating dim_incident_info...")
-cursor.execute("INSERT INTO gun_violence.dim_incident_info (dim_incident_info_id,incident_characteristics,notes) SELECT incident_id,incident_characteristics, notes from gun_violence.aux")
+cursor.execute("""
+  INSERT INTO gun_violence.dim_incident_info (dim_incident_info_id,incident_characteristics,notes)
+  SELECT incident_id,incident_characteristics, notes
+  FROM gun_violence.aux
+  """)
 print("done")
 cursor.close()
 
 cnx.commit()
+
 
 cursor=cnx.cursor()
 print("---------------------------------------------")
 print("Populating dim_location...")
-cursor.execute("INSERT INTO gun_violence.dim_location (dim_location_id,city_or_county,state,latitude,longitude,address,location_description) SELECT incident_id,city_or_county,state,latitude,CAST(longitude as DECIMAL(13,8)) longitude,address,location_description from gun_violence.aux")
+cursor.execute("""
+    INSERT INTO gun_violence.dim_location (dim_location_id,city_or_county,state,latitude,longitude,address,location_description,dim_state_district_id)
+    SELECT incident_id,city_or_county,state,latitude,longitude,address,location_description,incident_id
+    FROM gun_violence.aux
+""")
 print("done")
 cursor.close()
 
+
 cnx.commit()
+
