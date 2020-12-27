@@ -67,15 +67,15 @@ CREATE TEMPORARY TABLE IF NOT EXISTS `gun_violence`.`aux` (
   `state` TEXT NULL,
   `city_or_county` TEXT NULL,
   `address` TEXT NULL,
-  `n_killed` TEXT NULL,
-  `n_injured` TEXT NULL,
+  `n_killed` INT NULL,
+  `n_injured` INT NULL,
   `gun_stolen` TEXT NULL,
   `gun_type` TEXT NULL,
   `incident_characteristics` TEXT NULL,
   `latitude` DECIMAL(13,8) NULL,
   `location_description` TEXT NULL,
   `longitude` TEXT NULL,
-  `n_guns_involved` TEXT NULL,
+  `n_guns_involved` INT NULL,
   `notes` TEXT NULL,
   `participant_age` TEXT NULL,
   `participant_age_group` TEXT NULL,
@@ -125,15 +125,15 @@ try:
             state = row['state']
             city_or_county = row['city_or_county']
             address = row['address'].replace('"','')
-            n_killed = row['n_killed']
-            n_injured = row['n_injured']
+            n_killed = int(row['n_killed']) if row['n_killed'] != "" else "NULL" 
+            n_injured = int(row['n_injured']) if row['n_injured'] != "" else "NULL"
             gun_stolen = row['gun_stolen']
             gun_type = row['gun_type']
             incident_characteristics = row['incident_characteristics']
             latitude = float(row['latitude']) if row['latitude'] != "" else "NULL" 
             location_description = row['location_description'].replace('"','')
             longitude = float(row['longitude']) if row['longitude'] != "" else "NULL"
-            n_guns_involved = row['n_guns_involved']
+            n_guns_involved = int(row['n_guns_involved']) if row['n_guns_involved'] != "" else "NULL"
             notes = row['notes'].replace('"','')
             participant_age = row['participant_age']
             participant_age_group = row['participant_age_group']
@@ -155,10 +155,10 @@ try:
               f'participant_status, participant_type,\n'
               f'state_house_district,state_senate_district) VALUES\n'
               
-              f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", "{n_killed}",\n'
-              f'"{n_injured}", "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
+              f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", {n_killed},\n'
+              f'{n_injured}, "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
               f'{latitude}, "{location_description}", {longitude},\n'
-              f'"{n_guns_involved}", "{notes}", "{participant_age}",\n'
+              f'{n_guns_involved}, "{notes}", "{participant_age}",\n'
               f'"{participant_age_group}", "{participant_gender}",\n'
               f'"{participant_name}", "{participant_relationship}",\n'
               f'"{participant_status}", "{participant_type}",\n'
@@ -224,3 +224,18 @@ cursor.close()
 
 cnx.commit()
 
+cursor=cnx.cursor()
+print("---------------------------------------------")
+print("Populating facts_gun_incident...")
+cursor.execute("""
+    INSERT INTO facts_gun_incident (incident_id, n_killed, n_injured, n_guns_involved, dim_date_id, dim_incident_info_id, dim_location_id)
+    SELECT incident_id, n_killed, n_injured, n_guns_involved, t1.dim_date_id, incident_id, incident_id
+    FROM gun_violence.aux t
+    LEFT JOIN dim_date t1
+    ON t.date=t1.date
+""")
+print("done")
+cursor.close()
+
+
+cnx.commit()
