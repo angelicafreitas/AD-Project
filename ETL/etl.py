@@ -74,7 +74,7 @@ CREATE TEMPORARY TABLE IF NOT EXISTS `gun_violence`.`aux` (
   `gun_stolen` TEXT NULL,
   `gun_type` TEXT NULL,
   `incident_characteristics` TEXT NULL,
-  `latitude` TEXT NULL,
+  `latitude` DECIMAL(13,8) NULL,
   `location_description` TEXT NULL,
   `longitude` TEXT NULL,
   `n_guns_involved` TEXT NULL,
@@ -123,7 +123,7 @@ try:
               if diff_days < newer_date_aux:
                 newer_date=date
                 newer_date_aux = diff_days
-
+            
             state = row['state']
             city_or_county = row['city_or_county']
             address = row['address'].replace('"','')
@@ -132,9 +132,9 @@ try:
             gun_stolen = row['gun_stolen']
             gun_type = row['gun_type']
             incident_characteristics = row['incident_characteristics']
-            latitude = row['latitude']
+            latitude = float(row['latitude']) if row['latitude'] != "" else "NULL" 
             location_description = row['location_description'].replace('"','')
-            longitude = row['longitude']
+            longitude = float(row['longitude']) if row['longitude'] != "" else "NULL"
             n_guns_involved = row['n_guns_involved']
             notes = row['notes'].replace('"','')
             participant_age = row['participant_age']
@@ -166,7 +166,7 @@ try:
               
               f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", "{n_killed}",\n'
               f'"{n_injured}", "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
-              f'"{latitude}", "{location_description}", "{longitude}",\n'
+              f'{latitude}, "{location_description}", {longitude},\n'
               f'"{n_guns_involved}", "{notes}", "{participant_age}",\n'
               f'"{participant_age_group}", "{participant_gender}",\n'
               f'"{participant_name}", "{participant_relationship}",\n'
@@ -223,6 +223,15 @@ cursor=cnx.cursor()
 print("---------------------------------------------")
 print("Populating dim_incident_info...")
 cursor.execute("INSERT INTO gun_violence.dim_incident_info (dim_incident_info_id,incident_characteristics,notes) SELECT incident_id,incident_characteristics, notes from gun_violence.aux")
+print("done")
+cursor.close()
+
+cnx.commit()
+
+cursor=cnx.cursor()
+print("---------------------------------------------")
+print("Populating dim_location...")
+cursor.execute("INSERT INTO gun_violence.dim_location (dim_location_id,city_or_county,state,latitude,longitude,address,location_description) SELECT incident_id,city_or_county,state,latitude,CAST(longitude as DECIMAL(13,8)) longitude,address,location_description from gun_violence.aux")
 print("done")
 cursor.close()
 

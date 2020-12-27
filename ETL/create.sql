@@ -53,14 +53,14 @@ ENGINE = InnoDB;
 -- Table `gun_violence`.`dim_location`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_location` (
-  `dim_location_id` INT NOT NULL AUTO_INCREMENT,
-  `city_or_county` VARCHAR(45) NULL,
+  `dim_location_id` INT NOT NULL,
+  `city_or_county` VARCHAR(100) NULL,
   `state` VARCHAR(45) NULL,
-  `latitude` FLOAT NULL,
-  `longitude` FLOAT NULL,
-  `address` VARCHAR(45) NULL,
-  `location_description` VARCHAR(45) NULL,
-  `dim_state_district_id` INT NOT NULL,
+  `latitude` DECIMAL(13,8) NULL,
+  `longitude` DECIMAL(13,8) NULL,
+  `address` TEXT NULL,
+  `location_description` TEXT NULL,
+  `dim_state_district_id` INT NULL,
   PRIMARY KEY (`dim_location_id`),
   INDEX `fk_dim_location_dim_state_district1_idx` (`dim_state_district_id` ASC) VISIBLE,
   CONSTRAINT `fk_dim_location_dim_state_district1`
