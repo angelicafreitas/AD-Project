@@ -108,71 +108,71 @@ try:
           if re.search("[0-9]+",row['incident_id']) and re.search("[0-9]+-[0-9]+-[0-9][1-9]",row['date']):
             incident_id = row['incident_id']
             date = row['date']
-            
             #To get newer and oldest date
-            # diff = str(datetime.datetime.today()-datetime.datetime.strptime(date, '%Y-%m-%d'))
-            # diff_days = int(diff.split(' ')[0])
-            # if i==0:
-            #   older_date=date
-            #   older_date_aux = diff_days
-            #   newer_date=date
-            #   newer_date_aux = diff_days
-            # else:
-            #   if diff_days > older_date_aux:
-            #     older_date_aux = diff_days
-            #     older_date=date
-            #   if diff_days < newer_date_aux:
-            #     newer_date=date
-            #     newer_date_aux = diff_days
+            diff = str(datetime.datetime.today()-datetime.datetime.strptime(date, '%Y-%m-%d'))
+            diff_days = int(diff.split(' ')[0])
+            if i==0:
+              older_date=date
+              older_date_aux = diff_days
+              newer_date=date
+              newer_date_aux = diff_days
+            else:
+              if diff_days > older_date_aux:
+                older_date_aux = diff_days
+                older_date=date
+              if diff_days < newer_date_aux:
+                newer_date=date
+                newer_date_aux = diff_days
 
-            # state = row['state']
-            # city_or_county = row['city_or_county']
-            # address = row['address'].replace('"','')
-            # n_killed = row['n_killed']
-            # n_injured = row['n_injured']
-            # gun_stolen = row['gun_stolen']
-            # gun_type = row['gun_type']
-            # incident_characteristics = row['incident_characteristics']
-            # latitude = row['latitude']
-            # location_description = row['location_description'].replace('"','')
-            # longitude = row['longitude']
-            # n_guns_involved = row['n_guns_involved']
-            # notes = row['notes'].replace('"','')
-            # participant_age = row['participant_age']
-            # participant_age_group = row['participant_age_group']
-            # participant_gender = row['participant_gender']
-            # participant_name = row['participant_name'].replace('"','')
-            # participant_relationship = row['participant_relationship']
-            # participant_status = row['participant_status']
-            # participant_type = row['participant_type']
+            state = row['state']
+            city_or_county = row['city_or_county']
+            address = row['address'].replace('"','')
+            n_killed = row['n_killed']
+            n_injured = row['n_injured']
+            gun_stolen = row['gun_stolen']
+            gun_type = row['gun_type']
+            incident_characteristics = row['incident_characteristics']
+            latitude = row['latitude']
+            location_description = row['location_description'].replace('"','')
+            longitude = row['longitude']
+            n_guns_involved = row['n_guns_involved']
+            notes = row['notes'].replace('"','')
+            participant_age = row['participant_age']
+            participant_age_group = row['participant_age_group']
+            participant_gender = row['participant_gender']
+            participant_name = row['participant_name'].replace('"','')
+            participant_relationship = row['participant_relationship']
+            participant_status = row['participant_status']
+            participant_type = row['participant_type']
             state_house_district = row['state_house_district']
             state_senate_district  = row['state_senate_district']
 
             if state_senate_district != "" and max_senate < int(state_senate_district):
+
                 max_senate = int(state_senate_district)
             if state_house_district != "" and max_house < int(state_house_district):
                 max_house = int(state_house_district)
 
 
-            # cursor.execute(f' INSERT INTO gun_violence.aux (\n'
-            #   f'incident_id, date, state, city_or_county, address, n_killed,\n'
-            #   f'n_injured, gun_stolen, gun_type, incident_characteristics,\n'
-            #   f'latitude, location_description, longitude,\n'
-            #   f'n_guns_involved, notes, participant_age,\n'
-            #   f'participant_age_group, participant_gender,\n'
-            #   f'participant_name, participant_relationship,\n'
-            #   f'participant_status, participant_type,\n'
-            #   f'state_house_district,state_senate_district) VALUES\n'
+            cursor.execute(f' INSERT INTO gun_violence.aux (\n'
+              f'incident_id, date, state, city_or_county, address, n_killed,\n'
+              f'n_injured, gun_stolen, gun_type, incident_characteristics,\n'
+              f'latitude, location_description, longitude,\n'
+              f'n_guns_involved, notes, participant_age,\n'
+              f'participant_age_group, participant_gender,\n'
+              f'participant_name, participant_relationship,\n'
+              f'participant_status, participant_type,\n'
+              f'state_house_district,state_senate_district) VALUES\n'
               
-            #   f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", "{n_killed}",\n'
-            #   f'"{n_injured}", "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
-            #   f'"{latitude}", "{location_description}", "{longitude}",\n'
-            #   f'"{n_guns_involved}", "{notes}", "{participant_age}",\n'
-            #   f'"{participant_age_group}", "{participant_gender}",\n'
-            #   f'"{participant_name}", "{participant_relationship}",\n'
-            #   f'"{participant_status}", "{participant_type}",\n'
-            #   f'"{state_house_district}", "{state_senate_district}");'
-            # )
+              f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", "{n_killed}",\n'
+              f'"{n_injured}", "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
+              f'"{latitude}", "{location_description}", "{longitude}",\n'
+              f'"{n_guns_involved}", "{notes}", "{participant_age}",\n'
+              f'"{participant_age_group}", "{participant_gender}",\n'
+              f'"{participant_name}", "{participant_relationship}",\n'
+              f'"{participant_status}", "{participant_type}",\n'
+              f'"{state_house_district}", "{state_senate_district}");'
+            )
             i+=1
           j+=1
         print(f'Total lines {j}, meaningful lines {i}')
@@ -183,15 +183,15 @@ print(f'Older date: {older_date} | Newer date: {newer_date}')
 print(f'Max senate: {max_senate} | Max house: {max_house}')
 print("---------------------------------------------")
 
-# print("Populating dim date...")
-# cursor.execute(f'CALL gun_violence.generate_Dates("{older_date}","{newer_date}");')
-# print("dim_date populated")
+print("Populating dim date...")
+cursor.execute(f'CALL gun_violence.generate_Dates("{older_date}","{newer_date}");')
+print("dim_date populated")
 
-# print("Populating dim_participant_age_group")
-# cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (1,'Adult 18+');")
-# cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (2,'Child 0-11');")
-# cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (3,'Teen 12-18');")
-# print("dim_participant_age_group")
+print("Populating dim_participant_age_group")
+cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (1,'Adult 18+');")
+cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (2,'Child 0-11');")
+cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (3,'Teen 12-18');")
+print("dim_participant_age_group")
 
 print("Populating dim_state_district")
 cursor.execute("DROP PROCEDURE IF EXISTS gun_violence.generate_state_district;")
