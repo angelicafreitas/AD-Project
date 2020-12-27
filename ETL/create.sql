@@ -32,8 +32,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_incident_info` (
   `dim_incident_info_id` INT NOT NULL,
-  `incident_characteristics` VARCHAR(45) NULL,
-  `notes` VARCHAR(45) NULL,
+  `incident_characteristics` TEXT NULL,
+  `notes` TEXT NULL,
   PRIMARY KEY (`dim_incident_info_id`))
 ENGINE = InnoDB;
 

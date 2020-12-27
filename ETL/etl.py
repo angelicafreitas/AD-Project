@@ -185,15 +185,17 @@ print("---------------------------------------------")
 
 print("Populating dim date...")
 cursor.execute(f'CALL gun_violence.generate_Dates("{older_date}","{newer_date}");')
-print("dim_date populated")
+print("done")
 
-print("Populating dim_participant_age_group")
+print("---------------------------------------------")
+print("Populating dim_participant_age_group...")
 cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (1,'Adult 18+');")
 cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (2,'Child 0-11');")
 cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (3,'Teen 12-18');")
-print("dim_participant_age_group")
+print("done")
 
-print("Populating dim_state_district")
+print("---------------------------------------------")
+print("Populating dim_state_district...")
 cursor.execute("DROP PROCEDURE IF EXISTS gun_violence.generate_state_district;")
 cursor.execute("""
     CREATE PROCEDURE gun_violence.generate_state_district(senate INT, house INT)
@@ -212,9 +214,16 @@ cursor.execute("""
 	  END WHILE;
 END;""")
 cursor.execute(f'CALL gun_violence.generate_state_district({max_senate},{max_house});')
-print("dim_state_district populated")
+print("done")
 
-
-#cursor.execute("DROP TABLE gun_violence.aux")
+cursor.close()
 cnx.commit()
 
+cursor=cnx.cursor()
+print("---------------------------------------------")
+print("Populating dim_incident_info...")
+cursor.execute("INSERT INTO gun_violence.dim_incident_info (dim_incident_info_id,incident_characteristics,notes) SELECT incident_id,incident_characteristics, notes from gun_violence.aux")
+print("done")
+cursor.close()
+
+cnx.commit()
