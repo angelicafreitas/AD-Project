@@ -105,18 +105,50 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `gun_violence`.`dim_gun_stolen`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_gun_stolen` (
+  `dim_gun_stolen_id` INT NOT NULL,
+  `class_stolen` VARCHAR(100) NULL,
+  PRIMARY KEY (`dim_gun_stolen_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `gun_violence`.`dim_gun_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_gun_type` (
+  `dim_gun_type_id` INT NOT NULL,
+  `class_type` VARCHAR(100) NULL,
+  PRIMARY KEY (`dim_gun_type_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `gun_violence`.`dim_gun`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_gun` (
   `dim_gun_id` INT NOT NULL AUTO_INCREMENT,
-  `gun_type` VARCHAR(45) NULL,
-  `gun_stolen` INT NULL,
   `facts_gun_incident_incident_id` INT NOT NULL,
+  `dim_gun_stolen_id` INT NOT NULL,
+  `dim_gun_type_id` INT NOT NULL,
   PRIMARY KEY (`dim_gun_id`),
   INDEX `fk_dim_gun_facts_gun_incident1_idx` (`facts_gun_incident_incident_id` ASC) VISIBLE,
+  INDEX `fk_dim_gun_dim_gun_stolen1_idx` (`dim_gun_stolen_id` ASC) VISIBLE,
+  INDEX `fk_dim_gun_dim_gun_type1_idx` (`dim_gun_type_id` ASC) VISIBLE,
   CONSTRAINT `fk_dim_gun_facts_gun_incident1`
     FOREIGN KEY (`facts_gun_incident_incident_id`)
     REFERENCES `gun_violence`.`facts_gun_incident` (`incident_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_dim_gun_dim_gun_stolen1`
+    FOREIGN KEY (`dim_gun_stolen_id`)
+    REFERENCES `gun_violence`.`dim_gun_stolen` (`dim_gun_stolen_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_dim_gun_dim_gun_type1`
+    FOREIGN KEY (`dim_gun_type_id`)
+    REFERENCES `gun_violence`.`dim_gun_type` (`dim_gun_type_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

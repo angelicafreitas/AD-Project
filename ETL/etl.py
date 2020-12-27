@@ -11,7 +11,12 @@ older_date_aux = 0
 newer_date = ''
 newer_date_aux = 900000
 
+gun_type_set = set()
 
+def do_add(s, x):
+  l = len(s)
+  s.add(x)
+  return len(s) != l
 #apagar schema se ja tiver e criar atraves do create.sql
 try:
     cnx = mysql.connector.connect(user=config.user,
@@ -60,7 +65,7 @@ queryProc = """
 cursor.execute(queryProc)
 
 cursor.execute("""
-CREATE TEMPORARY TABLE IF NOT EXISTS `gun_violence`.`aux` (
+CREATE TABLE IF NOT EXISTS `gun_violence`.`aux` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `incident_id` INT NULL,
   `date` DATE NULL,
@@ -101,7 +106,7 @@ try:
         i=0
         j=0
         print(f'Handling the dataset...')
-        for row in reader:
+        for idx,row in enumerate(reader):
           #Some ids weren't numbers and the date needs to be a date
           if re.search("[0-9]+",row['incident_id']) and re.search("[0-9]+-[0-9]+-[0-9][1-9]",row['date']):
             incident_id = row['incident_id']
@@ -121,7 +126,7 @@ try:
               if diff_days < newer_date_aux:
                 newer_date=date
                 newer_date_aux = diff_days
-            
+              
             state = row['state']
             city_or_county = row['city_or_county']
             address = row['address'].replace('"','')
@@ -145,6 +150,18 @@ try:
             state_house_district = int(row['state_house_district']) if row['state_house_district'] != "" else "NULL" 
             state_senate_district  = int(row['state_senate_district']) if row['state_senate_district'] != "" else "NULL" 
 
+            if gun_type != "":
+              if '||' in gun_type:
+                splitted = gun_type.split("||")
+                for gun in splitted:
+                  type = gun.split("::")[-1]
+                  gun_type_set.add(type)
+              else:
+                splitted = gun_type.split("|")
+                for gun in splitted:
+                  type = gun.split(":")[-1]
+                  gun_type_set.add(type)
+
             cursor.execute(f' INSERT INTO gun_violence.aux (\n'
               f'incident_id, date, state, city_or_county, address, n_killed,\n'
               f'n_injured, gun_stolen, gun_type, incident_characteristics,\n'
@@ -154,7 +171,7 @@ try:
               f'participant_name, participant_relationship,\n'
               f'participant_status, participant_type,\n'
               f'state_house_district,state_senate_district) VALUES\n'
-              
+                
               f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", {n_killed},\n'
               f'{n_injured}, "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
               f'{latitude}, "{location_description}", {longitude},\n'
@@ -170,72 +187,99 @@ try:
 except Exception as e:
     print(f'Hello -> {e}')
 
-print(f'Older date: {older_date} | Newer date: {newer_date}')
-print("---------------------------------------------")
 
-print("Populating dim date...")
-cursor.execute(f'CALL gun_violence.generate_Dates("{older_date}","{newer_date}");')
-print("done")
+# print(f'Older date: {older_date} | Newer date: {newer_date}')
+# print("---------------------------------------------")
 
-print("---------------------------------------------")
-print("Populating dim_participant_age_group...")
-cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (1,'Adult 18+');")
-cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (2,'Child 0-11');")
-cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (3,'Teen 12-18');")
-print("done")
+# print("Populating dim date...")
+# cursor.execute(f'CALL gun_violence.generate_Dates("{older_date}","{newer_date}");')
+# print("done")
 
-print("---------------------------------------------")
-print("Populating dim_state_district...")
-cursor.execute("""
-    INSERT INTO gun_violence.dim_state_district (dim_state_district_id,senate,house)
-    SELECT incident_id,state_senate_district, state_house_district
-    FROM gun_violence.aux
-""")
-print("done")
+# print("---------------------------------------------")
+# print("Populating dim_participant_age_group...")
+# cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (1,'Adult 18+');")
+# cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (2,'Child 0-11');")
+# cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (3,'Teen 12-18');")
+# print("done")
 
-cursor.close()
-cnx.commit()
+# print("---------------------------------------------")
+# print("Populating dim_state_district...")
+# cursor.execute("""
+#     INSERT INTO gun_violence.dim_state_district (dim_state_district_id,senate,house)
+#     SELECT incident_id,state_senate_district, state_house_district
+#     FROM gun_violence.aux
+# """)
+# print("done")
+
+# cursor.close()
+# cnx.commit()
+
+# cursor=cnx.cursor()
+# print("---------------------------------------------")
+# print("Populating dim_incident_info...")
+# cursor.execute("""
+#   INSERT INTO gun_violence.dim_incident_info (dim_incident_info_id,incident_characteristics,notes)
+#   SELECT incident_id,incident_characteristics, notes
+#   FROM gun_violence.aux
+#   """)
+# print("done")
+# cursor.close()
+
+# cnx.commit()
+
+
+# cursor=cnx.cursor()
+# print("---------------------------------------------")
+# print("Populating dim_location...")
+# cursor.execute("""
+#     INSERT INTO gun_violence.dim_location (dim_location_id,city_or_county,state,latitude,longitude,address,location_description,dim_state_district_id)
+#     SELECT incident_id,city_or_county,state,latitude,longitude,address,location_description,incident_id
+#     FROM gun_violence.aux
+# """)
+# print("done")
+# cursor.close()
+
+
+# cnx.commit()
+
+# cursor=cnx.cursor()
+# print("---------------------------------------------")
+# print("Populating facts_gun_incident...")
+# cursor.execute("""
+#     INSERT INTO facts_gun_incident (incident_id, n_killed, n_injured, n_guns_involved, dim_date_id, dim_incident_info_id, dim_location_id)
+#     SELECT incident_id, n_killed, n_injured, n_guns_involved, t1.dim_date_id, incident_id, incident_id
+#     FROM gun_violence.aux t
+#     LEFT JOIN dim_date t1
+#     ON t.date=t1.date
+# """)
+# print("done")
+# cursor.close()
+
+
+# cnx.commit()
+
+
+# cursor=cnx.cursor()
+# print("---------------------------------------------")
+# print("Populating dim_gun_stolen...")
+# cursor.execute("insert into dim_gun_stolen (dim_gun_stolen_id,class_stolen) VALUES (1,'Unknown');")
+# cursor.execute("insert into dim_gun_stolen (dim_gun_stolen_id,class_stolen) VALUES (2,'Stolen');")
+# cursor.execute("insert into dim_gun_stolen (dim_gun_stolen_id,class_stolen) VALUES (3,'Not-stolen');")
+# print("done")
+# cursor.close()
+
+# cnx.commit()
+
 
 cursor=cnx.cursor()
 print("---------------------------------------------")
-print("Populating dim_incident_info...")
-cursor.execute("""
-  INSERT INTO gun_violence.dim_incident_info (dim_incident_info_id,incident_characteristics,notes)
-  SELECT incident_id,incident_characteristics, notes
-  FROM gun_violence.aux
-  """)
+print("Populating dim_gun_type...")
+x=1
+for val in gun_type_set:
+  cursor.execute(f'INSERT INTO gun_violence.dim_gun_type (dim_gun_type_id,class_type) VALUES ({x},"{val}");\n')
+  x+=1
+
 print("done")
 cursor.close()
-
-cnx.commit()
-
-
-cursor=cnx.cursor()
-print("---------------------------------------------")
-print("Populating dim_location...")
-cursor.execute("""
-    INSERT INTO gun_violence.dim_location (dim_location_id,city_or_county,state,latitude,longitude,address,location_description,dim_state_district_id)
-    SELECT incident_id,city_or_county,state,latitude,longitude,address,location_description,incident_id
-    FROM gun_violence.aux
-""")
-print("done")
-cursor.close()
-
-
-cnx.commit()
-
-cursor=cnx.cursor()
-print("---------------------------------------------")
-print("Populating facts_gun_incident...")
-cursor.execute("""
-    INSERT INTO facts_gun_incident (incident_id, n_killed, n_injured, n_guns_involved, dim_date_id, dim_incident_info_id, dim_location_id)
-    SELECT incident_id, n_killed, n_injured, n_guns_involved, t1.dim_date_id, incident_id, incident_id
-    FROM gun_violence.aux t
-    LEFT JOIN dim_date t1
-    ON t.date=t1.date
-""")
-print("done")
-cursor.close()
-
 
 cnx.commit()
