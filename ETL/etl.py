@@ -1,10 +1,10 @@
-import csv
 import mysql.connector
 import config
 from mysql.connector import errorcode
 import time
 import datetime
 import re
+import xlrd
 
 older_date = ''
 older_date_aux = 0
@@ -12,6 +12,8 @@ newer_date = ''
 newer_date_aux = 900000
 
 gun_type_set = set()
+
+#pip3 install mysql-connector-python
 
 def do_add(s, x):
   l = len(s)
@@ -96,97 +98,119 @@ ENGINE = InnoDB;
 """)
 
 
-  
-
 
 #tratar do dataset
-try:
-    with open('../dataset/gun-violence-data_01-2013_03-2018.csv', newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        i=0
-        j=0
-        print(f'Handling the dataset...')
-        for idx,row in enumerate(reader):
-          #Some ids weren't numbers and the date needs to be a date
-          if re.search("[0-9]+",row['incident_id']) and re.search("[0-9]+-[0-9]+-[0-9][1-9]",row['date']):
-            incident_id = row['incident_id']
-            date = row['date']
-            #To get newer and oldest date
-            diff = str(datetime.datetime.today()-datetime.datetime.strptime(date, '%Y-%m-%d'))
-            diff_days = int(diff.split(' ')[0])
-            if i==0:
-              older_date=date
-              older_date_aux = diff_days
-              newer_date=date
-              newer_date_aux = diff_days
-            else:
-              if diff_days > older_date_aux:
-                older_date_aux = diff_days
-                older_date=date
-              if diff_days < newer_date_aux:
-                newer_date=date
-                newer_date_aux = diff_days
+book = xlrd.open_workbook('../dataset/gun-violence-data_01-2013_03-2018.xlsx')
+sheet = book.sheet_by_index(0)
+#book = xlrd.open_workbook('../dataset/teste.xlsx')
+#sheet = book.sheet_by_index(0)
+
+rows= sheet.nrows
+
+i=0
+print(f'Handling the dataset...')
+for row in range(1,rows):
+    
+  #Some ids weren't numbers and the date needs to be a date
+  if sheet.cell_type(row,0)==2  and sheet.cell_type(row,1)==3 and not(re.search("-[0-9].*",str(sheet.cell_value(row,17)))):
+    incident_id = int(sheet.cell_value(row,0))
+    date = datetime.datetime(*xlrd.xldate_as_tuple(sheet.cell_value(row,1), book.datemode))
+
+    #To get newer and oldest date
+    diff = str(datetime.datetime.today()-date)
+    diff_days = int(diff.split(' ')[0])
+    if i==0:
+      older_date=date
+      older_date_aux = diff_days
+      newer_date=date
+      newer_date_aux = diff_days
+    else:
+      if diff_days > older_date_aux:
+        older_date_aux = diff_days
+        older_date=date
+      if diff_days < newer_date_aux:
+        newer_date=date
+        newer_date_aux = diff_days
               
-            state = row['state']
-            city_or_county = row['city_or_county']
-            address = row['address'].replace('"','')
-            n_killed = int(row['n_killed']) if row['n_killed'] != "" else "NULL" 
-            n_injured = int(row['n_injured']) if row['n_injured'] != "" else "NULL"
-            gun_stolen = row['gun_stolen']
-            gun_type = row['gun_type']
-            incident_characteristics = row['incident_characteristics']
-            latitude = float(row['latitude']) if row['latitude'] != "" else "NULL" 
-            location_description = row['location_description'].replace('"','')
-            longitude = float(row['longitude']) if row['longitude'] != "" else "NULL"
-            n_guns_involved = int(row['n_guns_involved']) if row['n_guns_involved'] != "" else "NULL"
-            notes = row['notes'].replace('"','')
-            participant_age = row['participant_age']
-            participant_age_group = row['participant_age_group']
-            participant_gender = row['participant_gender']
-            participant_name = row['participant_name'].replace('"','')
-            participant_relationship = row['participant_relationship']
-            participant_status = row['participant_status']
-            participant_type = row['participant_type']
-            state_house_district = int(row['state_house_district']) if row['state_house_district'] != "" else "NULL" 
-            state_senate_district  = int(row['state_senate_district']) if row['state_senate_district'] != "" else "NULL" 
+    state = sheet.cell_value(row,2)
+    city_or_county = sheet.cell_value(row,3)
+    if sheet.cell_type(row,4)==1:
+      address = sheet.cell_value(row,4).replace('"','')
+    else:
+      address = ""
+    n_killed = int(sheet.cell_value(row,5)) if sheet.cell_value(row,5) != "" else "NULL" 
+    n_injured = int(sheet.cell_value(row,6)) if sheet.cell_value(row,6) != "" else "NULL"
+    gun_stolen = sheet.cell_value(row,11)
+    gun_type = sheet.cell_value(row,12)
+    
+    if sheet.cell_type(row,13)==1:
+      incident_characteristics = sheet.cell_value(row,13).replace('"','')
+    elif sheet.cell_type(row,13)==3:
+      incident_characteristics = datetime.datetime(*xlrd.xldate_as_tuple(sheet.cell_value(row,13), book.datemode))
+    else: 
+      incident_characteristics = sheet.cell_value(row,13)
 
-            if gun_type != "":
-              if '||' in gun_type:
-                splitted = gun_type.split("||")
-                for gun in splitted:
-                  type = gun.split("::")[-1]
-                  gun_type_set.add(type)
-              else:
-                splitted = gun_type.split("|")
-                for gun in splitted:
-                  type = gun.split(":")[-1]
-                  gun_type_set.add(type)
+    latitude = sheet.cell_value(row,14) if sheet.cell_value(row,14) != "" else "NULL" 
+    
+    if sheet.cell_type(row,15)==1 and sheet.cell_type(row,15)!=3:
+      location_description = sheet.cell_value(row,15).replace('"','')
+    else: 
+      location_description = sheet.cell_value(row,15)
+    
+    longitude = sheet.cell_value(row,16) if sheet.cell_value(row,16) != "" else "NULL"
+    n_guns_involved = int(sheet.cell_value(row,17)) if sheet.cell_value(row,17) != "" else "NULL"
+    
+    if sheet.cell_type(row,18)==1:
+      notes = sheet.cell_value(row,18).replace('"','')
+    elif sheet.cell_type(row,18)==3:
+      notes = ""
+    else: 
+      notes = sheet.cell_value(row,18)
 
-            cursor.execute(f' INSERT INTO gun_violence.aux (\n'
-              f'incident_id, date, state, city_or_county, address, n_killed,\n'
-              f'n_injured, gun_stolen, gun_type, incident_characteristics,\n'
-              f'latitude, location_description, longitude,\n'
-              f'n_guns_involved, notes, participant_age,\n'
-              f'participant_age_group, participant_gender,\n'
-              f'participant_name, participant_relationship,\n'
-              f'participant_status, participant_type,\n'
-              f'state_house_district,state_senate_district) VALUES\n'
+    participant_age = sheet.cell_value(row,19)
+    participant_age_group = sheet.cell_value(row,20)
+    participant_gender = sheet.cell_value(row,21)
+    participant_name = sheet.cell_value(row,22).replace('"','')
+    participant_relationship = sheet.cell_value(row,23)
+    participant_status = sheet.cell_value(row,24)
+    participant_type = sheet.cell_value(row,25)
+    state_house_district = int(sheet.cell_value(row,27)) if sheet.cell_type(row,27) == 2 else "NULL" 
+    state_senate_district  = int(sheet.cell_value(row,28)) if sheet.cell_type(row,28) == 2 else "NULL" 
+
+    if gun_type != "":
+      if '||' in gun_type:
+        splitted = gun_type.split("||")
+        for gun in splitted:
+          type = gun.split("::")[-1]
+          gun_type_set.add(type)
+      else:
+        splitted = gun_type.split("|")
+        for gun in splitted:
+          type = gun.split(":")[-1]
+          gun_type_set.add(type)
+
+    cursor.execute(f' INSERT INTO gun_violence.aux (\n'
+      f'incident_id, date, state, city_or_county, address, n_killed,\n'
+      f'n_injured, gun_stolen, gun_type, incident_characteristics,\n'
+      f'latitude, location_description, longitude,\n'
+      f'n_guns_involved, notes, participant_age,\n'
+      f'participant_age_group, participant_gender,\n'
+      f'participant_name, participant_relationship,\n'
+      f'participant_status, participant_type,\n'
+      f'state_house_district,state_senate_district) VALUES\n'
                 
-              f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", {n_killed},\n'
-              f'{n_injured}, "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
-              f'{latitude}, "{location_description}", {longitude},\n'
-              f'{n_guns_involved}, "{notes}", "{participant_age}",\n'
-              f'"{participant_age_group}", "{participant_gender}",\n'
-              f'"{participant_name}", "{participant_relationship}",\n'
-              f'"{participant_status}", "{participant_type}",\n'
-              f'{state_house_district}, {state_senate_district});'
-            )
-            i+=1
-          j+=1
-        print(f'Total lines {j}, meaningful lines {i}')
-except Exception as e:
-    print(f'Hello -> {e}')
+      f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", {n_killed},\n'
+      f'{n_injured}, "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
+      f'{latitude}, "{location_description}", {longitude},\n'
+      f'{n_guns_involved}, "{notes}", "{participant_age}",\n'
+      f'"{participant_age_group}", "{participant_gender}",\n'
+      f'"{participant_name}", "{participant_relationship}",\n'
+      f'"{participant_status}", "{participant_type}",\n'
+      f'{state_house_district}, {state_senate_district});'
+    )
+    i+=1
 
+print(f'Total lines {rows}, meaningful lines {i}')
 
 print(f'Older date: {older_date} | Newer date: {newer_date}')
 print("---------------------------------------------")
