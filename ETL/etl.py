@@ -19,6 +19,15 @@ def do_add(s, x):
   l = len(s)
   s.add(x)
   return len(s) != l
+
+def insert_dim_gun(cursor, stolen_gun, type_gun):
+  cursor.execute(f'select dim_gun_type_id from gun_violence.dim_gun_type where class_type="{type_gun}";')
+  id_gun_type, = cursor.fetchone()
+
+  cursor.execute(f'select dim_gun_stolen_id from gun_violence.dim_gun_stolen where class_stolen="{stolen_gun}";')
+  id_gun_stolen, = cursor.fetchone()
+  cursor.execute(f'INSERT INTO gun_violence.dim_gun(facts_gun_incident_incident_id,dim_gun_stolen_id,dim_gun_type_id) VALUES({incident_id},{id_gun_stolen},{id_gun_type});')
+
 #apagar schema se ja tiver e criar atraves do create.sql
 try:
     cnx = mysql.connector.connect(user=config.user,
@@ -100,14 +109,14 @@ ENGINE = InnoDB;
 
 
 #tratar do dataset
+print(f'Loading the dataset...')
 book = xlrd.open_workbook('../dataset/gun-violence-data_01-2013_03-2018.xlsx')
 sheet = book.sheet_by_index(0)
 #book = xlrd.open_workbook('../dataset/teste.xlsx')
 #sheet = book.sheet_by_index(0)
 
 rows= sheet.nrows
-
-i=0
+meaningful_lines=0
 print(f'Handling the dataset...')
 for row in range(1,rows):
     
@@ -119,7 +128,7 @@ for row in range(1,rows):
     #To get newer and oldest date
     diff = str(datetime.datetime.today()-date)
     diff_days = int(diff.split(' ')[0])
-    if i==0:
+    if meaningful_lines==0:
       older_date=date
       older_date_aux = diff_days
       newer_date=date
@@ -134,10 +143,8 @@ for row in range(1,rows):
               
     state = sheet.cell_value(row,2)
     city_or_county = sheet.cell_value(row,3)
-    if sheet.cell_type(row,4)==1:
-      address = sheet.cell_value(row,4).replace('"','')
-    else:
-      address = ""
+
+    address = sheet.cell_value(row,4).replace('"','') if sheet.cell_type(row,4)==1 else ""
     n_killed = int(sheet.cell_value(row,5)) if sheet.cell_value(row,5) != "" else "NULL" 
     n_injured = int(sheet.cell_value(row,6)) if sheet.cell_value(row,6) != "" else "NULL"
     gun_stolen = sheet.cell_value(row,11)
@@ -152,10 +159,7 @@ for row in range(1,rows):
 
     latitude = sheet.cell_value(row,14) if sheet.cell_value(row,14) != "" else "NULL" 
     
-    if sheet.cell_type(row,15)==1 and sheet.cell_type(row,15)!=3:
-      location_description = sheet.cell_value(row,15).replace('"','')
-    else: 
-      location_description = sheet.cell_value(row,15)
+    location_description = sheet.cell_value(row,15).replace('"','') if sheet.cell_type(row,15)==1 and sheet.cell_type(row,15)!=3 else sheet.cell_value(row,15) 
     
     longitude = sheet.cell_value(row,16) if sheet.cell_value(row,16) != "" else "NULL"
     n_guns_involved = int(sheet.cell_value(row,17)) if sheet.cell_value(row,17) != "" else "NULL"
@@ -177,6 +181,7 @@ for row in range(1,rows):
     state_house_district = int(sheet.cell_value(row,27)) if sheet.cell_type(row,27) == 2 else "NULL" 
     state_senate_district  = int(sheet.cell_value(row,28)) if sheet.cell_type(row,28) == 2 else "NULL" 
 
+    
     if gun_type != "":
       if '||' in gun_type:
         splitted = gun_type.split("||")
@@ -189,6 +194,7 @@ for row in range(1,rows):
           type = gun.split(":")[-1]
           gun_type_set.add(type)
 
+    
     cursor.execute(f' INSERT INTO gun_violence.aux (\n'
       f'incident_id, date, state, city_or_county, address, n_killed,\n'
       f'n_injured, gun_stolen, gun_type, incident_characteristics,\n'
@@ -208,9 +214,9 @@ for row in range(1,rows):
       f'"{participant_status}", "{participant_type}",\n'
       f'{state_house_district}, {state_senate_district});'
     )
-    i+=1
+    meaningful_lines+=1
 
-print(f'Total lines {rows}, meaningful lines {i}')
+print(f'Total lines {rows}, meaningful lines {meaningful_lines}')
 
 print(f'Older date: {older_date} | Newer date: {newer_date}')
 print("---------------------------------------------")
@@ -305,5 +311,49 @@ for val in gun_type_set:
 
 print("done")
 cursor.close()
+
+cnx.commit()
+
+
+cursor=cnx.cursor()
+print("---------------------------------------------")
+print("Populating dim_gun...")
+idAux=1
+while idAux <= meaningful_lines:
+  cursor.execute(f'select gun_stolen, gun_type, incident_id from gun_violence.aux where id={idAux}')
+  gun = cursor.fetchone()
+  gun_stolen, gun_type, incident_id = gun[0], gun[1], gun[2]
+  
+  #print(f'{gun_stolen} - {gun_type}')
+  separator = "#"
+  if gun_stolen != "" and gun_type != "" :
+    if '||' in gun_type:
+      separator = "||"
+      snc_separator = "::"
+
+    elif '|' in gun_type:
+      separator= "|"
+      snc_separator = ":"
+
+    else:
+      if '::' in gun_type:
+        snc_separator = "::"
+      else:
+        snc_separator = ":"
+
+    splitted_type = gun_type.split(separator)
+    splitted_stolen = gun_stolen.split(separator)
+
+    for i in range(len(splitted_type)):
+      stolen_gun = splitted_stolen[i].split(snc_separator)[-1]
+      type_gun = splitted_type[i].split(snc_separator)[-1]
+
+      insert_dim_gun(cursor, stolen_gun, type_gun)
+
+  idAux+=1
+print("done")
+cursor.close()
+
+
 
 cnx.commit()
