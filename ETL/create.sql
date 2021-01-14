@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant` (
   `relationship` VARCHAR(45) NULL,
   `status` VARCHAR(45) NULL,
   `type` VARCHAR(45) NULL,
-  `dim_participant_age_group_id` INT NOT NULL,
+  `dim_participant_age_group_id` INT NULL,
   `age` INT NULL,
   `facts_gun_incident_incident_id` INT NOT NULL,
   PRIMARY KEY (`dim_participant_id`),

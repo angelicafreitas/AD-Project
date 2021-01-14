@@ -5,6 +5,7 @@ import time
 import datetime
 import re
 import xlrd
+from functools import reduce 
 
 older_date = ''
 older_date_aux = 0
@@ -26,7 +27,20 @@ def insert_dim_gun(cursor, stolen_gun, type_gun):
 
   cursor.execute(f'select dim_gun_stolen_id from gun_violence.dim_gun_stolen where class_stolen="{stolen_gun}";')
   id_gun_stolen, = cursor.fetchone()
+  
   cursor.execute(f'INSERT INTO gun_violence.dim_gun(facts_gun_incident_incident_id,dim_gun_stolen_id,dim_gun_type_id) VALUES({incident_id},{id_gun_stolen},{id_gun_type});')
+
+def to_dict(string, separator,scn_separator):
+  ret = {}
+  if string.strip() == "":
+    return ret
+
+  for e1 in string.split(separator):
+    k,v = e1.split(scn_separator)
+    ret[k] = v
+
+  return ret
+
 
 #apagar schema se ja tiver e criar atraves do create.sql
 try:
@@ -153,7 +167,11 @@ for row in range(1,rows):
     if sheet.cell_type(row,13)==1:
       incident_characteristics = sheet.cell_value(row,13).replace('"','')
     elif sheet.cell_type(row,13)==3:
-      incident_characteristics = datetime.datetime(*xlrd.xldate_as_tuple(sheet.cell_value(row,13), book.datemode))
+      x = re.search("00:00:00",str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)))
+      if x:
+        incident_characteristics = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)).split(" ")[0])
+      else:
+        incident_characteristics = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)).split(" ")[-1])      
     else: 
       incident_characteristics = sheet.cell_value(row,13)
 
@@ -167,11 +185,22 @@ for row in range(1,rows):
     if sheet.cell_type(row,18)==1:
       notes = sheet.cell_value(row,18).replace('"','')
     elif sheet.cell_type(row,18)==3:
-      notes = ""
+      x = re.search("00:00:00",str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)))
+      if x:
+        notes = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)).split(" ")[0])
+      else:
+        notes = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)).split(" ")[-1])      
     else: 
       notes = sheet.cell_value(row,18)
+      
+    if sheet.cell_type(row,19) != 2:
+      if sheet.cell_type(row,19) == 3:
+        x = sheet.cell_value(row,19) # a float
+        x = int(x * 24 * 3600) # convert to number of seconds
+        participant_age = f'{x//3600}:{(x%3600)//60}' 
+      else:
+        participant_age = sheet.cell_value(row,19)
 
-    participant_age = sheet.cell_value(row,19)
     participant_age_group = sheet.cell_value(row,20)
     participant_gender = sheet.cell_value(row,21)
     participant_name = sheet.cell_value(row,22).replace('"','')
@@ -229,7 +258,7 @@ print("---------------------------------------------")
 print("Populating dim_participant_age_group...")
 cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (1,'Adult 18+');")
 cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (2,'Child 0-11');")
-cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (3,'Teen 12-18');")
+cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (3,'Teen 12-17');")
 print("done")
 
 print("---------------------------------------------")
@@ -322,31 +351,30 @@ idAux=1
 while idAux <= meaningful_lines:
   cursor.execute(f'select gun_stolen, gun_type, incident_id from gun_violence.aux where id={idAux}')
   gun = cursor.fetchone()
-  gun_stolen, gun_type, incident_id = gun[0], gun[1], gun[2]
+  gun_stolen, gun_type, incident_id = gun
   
-  #print(f'{gun_stolen} - {gun_type}')
   separator = "#"
   if gun_stolen != "" and gun_type != "" :
     if '||' in gun_type:
       separator = "||"
-      snc_separator = "::"
+      scn_separator = "::"
 
     elif '|' in gun_type:
       separator= "|"
-      snc_separator = ":"
+      scn_separator = ":"
 
     else:
       if '::' in gun_type:
-        snc_separator = "::"
+        scn_separator = "::"
       else:
-        snc_separator = ":"
+        scn_separator = ":"
 
     splitted_type = gun_type.split(separator)
     splitted_stolen = gun_stolen.split(separator)
 
     for i in range(len(splitted_type)):
-      stolen_gun = splitted_stolen[i].split(snc_separator)[-1]
-      type_gun = splitted_type[i].split(snc_separator)[-1]
+      stolen_gun = splitted_stolen[i].split(scn_separator)[-1]
+      type_gun = splitted_type[i].split(scn_separator)[-1]
 
       insert_dim_gun(cursor, stolen_gun, type_gun)
 
@@ -354,6 +382,65 @@ while idAux <= meaningful_lines:
 print("done")
 cursor.close()
 
+cnx.commit()
 
+
+cursor=cnx.cursor()
+print("---------------------------------------------")
+print("Populating dim_participant...")
+idAux=1
+while idAux <= 20000:
+  cursor.execute(f'select participant_gender, participant_name, participant_relationship, participant_status, participant_type, participant_age, participant_age_group from aux where id={idAux};')
+  participants = cursor.fetchone()
+  
+  aux = tuple(filter(lambda x: len(x)>1,participants))
+  
+  selected = aux[0] if len(aux) > 0 else ""
+
+  separator = ""
+  
+  if '||' in selected:
+    separator = "||"
+    scn_separator = "::"
+
+  elif '|' in selected:
+    separator= "|"
+    scn_separator = ":"
+
+  else:
+    if '::' in selected:
+      scn_separator = "::"
+    else:
+      scn_separator = ":"
+
+  if separator != "":
+    genders, names, relationships, statuss, types, ages, age_groups = tuple(map(lambda x: to_dict(x,separator,scn_separator),participants))
+    max_len = reduce(lambda e1,e2: max(e1,len(e2.split(separator))),participants,0)
+    
+    for i in range(max_len):
+      cursor.execute(f'select incident_id from aux where id={idAux};')
+      incident_id, = cursor.fetchone()
+
+      gender = genders[str(i)] if str(i) in genders else "NULL"
+      name = names[str(i)] if str(i) in names else "NULL"
+      relationship = relationships[str(i)] if str(i) in relationships else "NULL"
+      status = statuss[str(i)] if str(i) in statuss else "NULL"
+      ptype = types[str(i)] if str(i) in types else "NULL"
+      age = ages[str(i)] if str(i) in ages else "NULL"
+      age_group = age_groups[str(i)] if str(i) in age_groups else "NULL"      
+
+      # para buscar id age group
+      if age_group != "NULL":
+        cursor.execute(f'select dim_participant_age_group_id from dim_participant_age_group where class_age_group="{age_group}";')
+        id_age_group, = cursor.fetchone()
+
+      else:
+        id_age_group = "NULL"
+
+      cursor.execute(f'INSERT INTO gun_violence.dim_participant (gender,name,relationship,status,type,dim_participant_age_group_id,age,facts_gun_incident_incident_id) VALUES ("{gender}","{name}","{relationship}","{status}","{ptype}",{id_age_group},{age},{incident_id});')
+
+  idAux+=1
+print("done")
+cursor.close()
 
 cnx.commit()
