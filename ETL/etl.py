@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import mysql.connector
 import config
 from mysql.connector import errorcode
