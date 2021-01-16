@@ -1,0 +1,1840 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20203.20.1110.1623                               -->
+<workbook original-version='18.1' source-build='2020.3.3 (20203.20.1110.1623)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <IntuitiveSorting />
+    <IntuitiveSorting_SP2 />
+    <MapboxVectorStylesAndLayers />
+    <_.fcp.MarkAnimation.true...MarkAnimation />
+    <_.fcp.ObjectModelEncapsulateLegacy.true...ObjectModelEncapsulateLegacy />
+    <_.fcp.ObjectModelRelationshipPerfOptions.true...ObjectModelRelationshipPerfOptions />
+    <_.fcp.ObjectModelTableType.true...ObjectModelTableType />
+    <_.fcp.SchemaViewerObjectModel.true...SchemaViewerObjectModel />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='facts_gun_incident+ (gun_violence)' inline='true' name='federated.0njytps0de5swt10ehx0y1wjw3jz' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='localhost' name='mysql.1lw2veu07jrv3f1ehnowk1efbu9l'>
+            <connection class='mysql' dbname='gun_violence' odbc-native-protocol='' one-time-sql='' port='3306' server='localhost' source-charset='' username='root' />
+          </named-connection>
+        </named-connections>
+        <_.fcp.ObjectModelEncapsulateLegacy.false...relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_date' table='[dim_date]' type='table' />
+        <_.fcp.ObjectModelEncapsulateLegacy.true...relation type='collection'>
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='facts_gun_incident' table='[facts_gun_incident]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_date' table='[dim_date]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_gun' table='[dim_gun]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_gun_stolen' table='[dim_gun_stolen]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_gun_type' table='[dim_gun_type]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_incident_info' table='[dim_incident_info]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_location' table='[dim_location]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_state_district' table='[dim_state_district]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_participant' table='[dim_participant]' type='table' />
+          <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_participant_age_group' table='[dim_participant_age_group]' type='table' />
+        </_.fcp.ObjectModelEncapsulateLegacy.true...relation>
+        <cols>
+          <map key='[address]' value='[dim_location].[address]' />
+          <map key='[age]' value='[dim_participant].[age]' />
+          <map key='[city_or_county]' value='[dim_location].[city_or_county]' />
+          <map key='[class_age_group]' value='[dim_participant_age_group].[class_age_group]' />
+          <map key='[class_stolen]' value='[dim_gun_stolen].[class_stolen]' />
+          <map key='[class_type]' value='[dim_gun_type].[class_type]' />
+          <map key='[date]' value='[dim_date].[date]' />
+          <map key='[day]' value='[dim_date].[day]' />
+          <map key='[dim_date_id (dim_date)]' value='[dim_date].[dim_date_id]' />
+          <map key='[dim_date_id]' value='[facts_gun_incident].[dim_date_id]' />
+          <map key='[dim_gun_id]' value='[dim_gun].[dim_gun_id]' />
+          <map key='[dim_gun_stolen_id (dim_gun_stolen)]' value='[dim_gun_stolen].[dim_gun_stolen_id]' />
+          <map key='[dim_gun_stolen_id]' value='[dim_gun].[dim_gun_stolen_id]' />
+          <map key='[dim_gun_type_id (dim_gun_type)]' value='[dim_gun_type].[dim_gun_type_id]' />
+          <map key='[dim_gun_type_id]' value='[dim_gun].[dim_gun_type_id]' />
+          <map key='[dim_incident_info_id (dim_incident_info)]' value='[dim_incident_info].[dim_incident_info_id]' />
+          <map key='[dim_incident_info_id]' value='[facts_gun_incident].[dim_incident_info_id]' />
+          <map key='[dim_location_id (dim_location)]' value='[dim_location].[dim_location_id]' />
+          <map key='[dim_location_id]' value='[facts_gun_incident].[dim_location_id]' />
+          <map key='[dim_participant_age_group_id (dim_participant_age_group)]' value='[dim_participant_age_group].[dim_participant_age_group_id]' />
+          <map key='[dim_participant_age_group_id]' value='[dim_participant].[dim_participant_age_group_id]' />
+          <map key='[dim_participant_id]' value='[dim_participant].[dim_participant_id]' />
+          <map key='[dim_state_district_id (dim_state_district)]' value='[dim_state_district].[dim_state_district_id]' />
+          <map key='[dim_state_district_id]' value='[dim_location].[dim_state_district_id]' />
+          <map key='[facts_gun_incident_incident_id (dim_participant)]' value='[dim_participant].[facts_gun_incident_incident_id]' />
+          <map key='[facts_gun_incident_incident_id]' value='[dim_gun].[facts_gun_incident_incident_id]' />
+          <map key='[gender]' value='[dim_participant].[gender]' />
+          <map key='[house]' value='[dim_state_district].[house]' />
+          <map key='[incident_characteristics]' value='[dim_incident_info].[incident_characteristics]' />
+          <map key='[incident_id]' value='[facts_gun_incident].[incident_id]' />
+          <map key='[latitude]' value='[dim_location].[latitude]' />
+          <map key='[location_description]' value='[dim_location].[location_description]' />
+          <map key='[longitude]' value='[dim_location].[longitude]' />
+          <map key='[month]' value='[dim_date].[month]' />
+          <map key='[n_guns_involved]' value='[facts_gun_incident].[n_guns_involved]' />
+          <map key='[n_injured]' value='[facts_gun_incident].[n_injured]' />
+          <map key='[n_killed]' value='[facts_gun_incident].[n_killed]' />
+          <map key='[name]' value='[dim_participant].[name]' />
+          <map key='[notes]' value='[dim_incident_info].[notes]' />
+          <map key='[relationship]' value='[dim_participant].[relationship]' />
+          <map key='[senate]' value='[dim_state_district].[senate]' />
+          <map key='[state]' value='[dim_location].[state]' />
+          <map key='[status]' value='[dim_participant].[status]' />
+          <map key='[type]' value='[dim_participant].[type]' />
+          <map key='[year]' value='[dim_date].[year]' />
+        </cols>
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>incident_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[incident_id]</local-name>
+            <parent-name>[facts_gun_incident]</parent-name>
+            <remote-alias>incident_id</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>n_killed</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[n_killed]</local-name>
+            <parent-name>[facts_gun_incident]</parent-name>
+            <remote-alias>n_killed</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>n_injured</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[n_injured]</local-name>
+            <parent-name>[facts_gun_incident]</parent-name>
+            <remote-alias>n_injured</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>n_guns_involved</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[n_guns_involved]</local-name>
+            <parent-name>[facts_gun_incident]</parent-name>
+            <remote-alias>n_guns_involved</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_date_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_date_id]</local-name>
+            <parent-name>[facts_gun_incident]</parent-name>
+            <remote-alias>dim_date_id</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_incident_info_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_incident_info_id]</local-name>
+            <parent-name>[facts_gun_incident]</parent-name>
+            <remote-alias>dim_incident_info_id</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_location_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_location_id]</local-name>
+            <parent-name>[facts_gun_incident]</parent-name>
+            <remote-alias>dim_location_id</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_date_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_date_id (dim_date)]</local-name>
+            <parent-name>[dim_date]</parent-name>
+            <remote-alias>dim_date_id</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_date_36FD0174498143C88E9FF1744BED622E]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[date]</local-name>
+            <parent-name>[dim_date]</parent-name>
+            <remote-alias>date</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_DATE&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_DATE&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_date_36FD0174498143C88E9FF1744BED622E]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>day</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[day]</local-name>
+            <parent-name>[dim_date]</parent-name>
+            <remote-alias>day</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_date_36FD0174498143C88E9FF1744BED622E]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>month</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[month]</local-name>
+            <parent-name>[dim_date]</parent-name>
+            <remote-alias>month</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_date_36FD0174498143C88E9FF1744BED622E]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>year</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[year]</local-name>
+            <parent-name>[dim_date]</parent-name>
+            <remote-alias>year</remote-alias>
+            <ordinal>13</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_date_36FD0174498143C88E9FF1744BED622E]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_gun_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_gun_id]</local-name>
+            <parent-name>[dim_gun]</parent-name>
+            <remote-alias>dim_gun_id</remote-alias>
+            <ordinal>15</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_gun_401B5B5B47D340F48E498DC3CF705DBE]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>facts_gun_incident_incident_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[facts_gun_incident_incident_id]</local-name>
+            <parent-name>[dim_gun]</parent-name>
+            <remote-alias>facts_gun_incident_incident_id</remote-alias>
+            <ordinal>16</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_gun_401B5B5B47D340F48E498DC3CF705DBE]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_gun_stolen_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_gun_stolen_id]</local-name>
+            <parent-name>[dim_gun]</parent-name>
+            <remote-alias>dim_gun_stolen_id</remote-alias>
+            <ordinal>17</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_gun_401B5B5B47D340F48E498DC3CF705DBE]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_gun_type_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_gun_type_id]</local-name>
+            <parent-name>[dim_gun]</parent-name>
+            <remote-alias>dim_gun_type_id</remote-alias>
+            <ordinal>18</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_gun_401B5B5B47D340F48E498DC3CF705DBE]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_gun_stolen_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_gun_stolen_id (dim_gun_stolen)]</local-name>
+            <parent-name>[dim_gun_stolen]</parent-name>
+            <remote-alias>dim_gun_stolen_id</remote-alias>
+            <ordinal>20</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_gun_stolen_443AC35CC05C4AAEAEB17EBB3A1C7DB9]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>class_stolen</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[class_stolen]</local-name>
+            <parent-name>[dim_gun_stolen]</parent-name>
+            <remote-alias>class_stolen</remote-alias>
+            <ordinal>21</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>100</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_gun_stolen_443AC35CC05C4AAEAEB17EBB3A1C7DB9]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_gun_type_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_gun_type_id (dim_gun_type)]</local-name>
+            <parent-name>[dim_gun_type]</parent-name>
+            <remote-alias>dim_gun_type_id</remote-alias>
+            <ordinal>23</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_gun_type_5489F6ACF53046419D8CF235A983681E]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>class_type</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[class_type]</local-name>
+            <parent-name>[dim_gun_type]</parent-name>
+            <remote-alias>class_type</remote-alias>
+            <ordinal>24</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>100</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_gun_type_5489F6ACF53046419D8CF235A983681E]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_incident_info_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_incident_info_id (dim_incident_info)]</local-name>
+            <parent-name>[dim_incident_info]</parent-name>
+            <remote-alias>dim_incident_info_id</remote-alias>
+            <ordinal>26</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_incident_info_02333902AD4F43E7ACCE2B2C8EA040EE]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>incident_characteristics</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[incident_characteristics]</local-name>
+            <parent-name>[dim_incident_info]</parent-name>
+            <remote-alias>incident_characteristics</remote-alias>
+            <ordinal>27</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>21845</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_incident_info_02333902AD4F43E7ACCE2B2C8EA040EE]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>notes</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[notes]</local-name>
+            <parent-name>[dim_incident_info]</parent-name>
+            <remote-alias>notes</remote-alias>
+            <ordinal>28</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>21845</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_incident_info_02333902AD4F43E7ACCE2B2C8EA040EE]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_location_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_location_id (dim_location)]</local-name>
+            <parent-name>[dim_location]</parent-name>
+            <remote-alias>dim_location_id</remote-alias>
+            <ordinal>30</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>city_or_county</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[city_or_county]</local-name>
+            <parent-name>[dim_location]</parent-name>
+            <remote-alias>city_or_county</remote-alias>
+            <ordinal>31</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>100</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>state</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[state]</local-name>
+            <parent-name>[dim_location]</parent-name>
+            <remote-alias>state</remote-alias>
+            <ordinal>32</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>45</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>latitude</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[latitude]</local-name>
+            <parent-name>[dim_location]</parent-name>
+            <remote-alias>latitude</remote-alias>
+            <ordinal>33</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>13</precision>
+            <scale>8</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>longitude</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[longitude]</local-name>
+            <parent-name>[dim_location]</parent-name>
+            <remote-alias>longitude</remote-alias>
+            <ordinal>34</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>13</precision>
+            <scale>8</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>address</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[address]</local-name>
+            <parent-name>[dim_location]</parent-name>
+            <remote-alias>address</remote-alias>
+            <ordinal>35</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>21845</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>location_description</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[location_description]</local-name>
+            <parent-name>[dim_location]</parent-name>
+            <remote-alias>location_description</remote-alias>
+            <ordinal>36</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>21845</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_state_district_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_state_district_id]</local-name>
+            <parent-name>[dim_location]</parent-name>
+            <remote-alias>dim_state_district_id</remote-alias>
+            <ordinal>37</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_state_district_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_state_district_id (dim_state_district)]</local-name>
+            <parent-name>[dim_state_district]</parent-name>
+            <remote-alias>dim_state_district_id</remote-alias>
+            <ordinal>39</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_state_district_1D2914D6DFF2488B845675883C335142]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>senate</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[senate]</local-name>
+            <parent-name>[dim_state_district]</parent-name>
+            <remote-alias>senate</remote-alias>
+            <ordinal>40</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_state_district_1D2914D6DFF2488B845675883C335142]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>house</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[house]</local-name>
+            <parent-name>[dim_state_district]</parent-name>
+            <remote-alias>house</remote-alias>
+            <ordinal>41</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_state_district_1D2914D6DFF2488B845675883C335142]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_participant_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_participant_id]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>dim_participant_id</remote-alias>
+            <ordinal>43</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>gender</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[gender]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>gender</remote-alias>
+            <ordinal>44</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>45</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[name]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>name</remote-alias>
+            <ordinal>45</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>150</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>relationship</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[relationship]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>relationship</remote-alias>
+            <ordinal>46</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>45</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>status</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[status]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>status</remote-alias>
+            <ordinal>47</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>45</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>type</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[type]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>type</remote-alias>
+            <ordinal>48</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>45</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_participant_age_group_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_participant_age_group_id]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>dim_participant_age_group_id</remote-alias>
+            <ordinal>49</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>age</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[age]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>age</remote-alias>
+            <ordinal>50</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>facts_gun_incident_incident_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[facts_gun_incident_incident_id (dim_participant)]</local-name>
+            <parent-name>[dim_participant]</parent-name>
+            <remote-alias>facts_gun_incident_incident_id</remote-alias>
+            <ordinal>51</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_29590ECB64994B8EA85FCE99881DADE6]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dim_participant_age_group_id</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[dim_participant_age_group_id (dim_participant_age_group)]</local-name>
+            <parent-name>[dim_participant_age_group]</parent-name>
+            <remote-alias>dim_participant_age_group_id</remote-alias>
+            <ordinal>53</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_age_group_118E8AC3930C4DEB9C852C4F3A947FDA]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>class_age_group</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[class_age_group]</local-name>
+            <parent-name>[dim_participant_age_group]</parent-name>
+            <remote-alias>class_age_group</remote-alias>
+            <ordinal>54</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>150</width>
+            <contains-null>true</contains-null>
+            <collation charset='290' flag='1' name='LROOT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <_.fcp.ObjectModelEncapsulateLegacy.true...object-id>[dim_participant_age_group_118E8AC3930C4DEB9C852C4F3A947FDA]</_.fcp.ObjectModelEncapsulateLegacy.true...object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_date' datatype='table' name='[__tableau_internal_object_id__].[dim_date_36FD0174498143C88E9FF1744BED622E]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_gun' datatype='table' name='[__tableau_internal_object_id__].[dim_gun_401B5B5B47D340F48E498DC3CF705DBE]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_gun_stolen' datatype='table' name='[__tableau_internal_object_id__].[dim_gun_stolen_443AC35CC05C4AAEAEB17EBB3A1C7DB9]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_gun_type' datatype='table' name='[__tableau_internal_object_id__].[dim_gun_type_5489F6ACF53046419D8CF235A983681E]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_incident_info' datatype='table' name='[__tableau_internal_object_id__].[dim_incident_info_02333902AD4F43E7ACCE2B2C8EA040EE]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_location' datatype='table' name='[__tableau_internal_object_id__].[dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_participant' datatype='table' name='[__tableau_internal_object_id__].[dim_participant_29590ECB64994B8EA85FCE99881DADE6]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_participant_age_group' datatype='table' name='[__tableau_internal_object_id__].[dim_participant_age_group_118E8AC3930C4DEB9C852C4F3A947FDA]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='dim_state_district' datatype='table' name='[__tableau_internal_object_id__].[dim_state_district_1D2914D6DFF2488B845675883C335142]' role='measure' type='quantitative' />
+      <_.fcp.ObjectModelTableType.true...column caption='facts_gun_incident' datatype='table' name='[__tableau_internal_object_id__].[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]' role='measure' type='quantitative' />
+      <column caption='Address' datatype='string' name='[address]' role='dimension' semantic-role='' type='nominal' />
+      <column caption='Age' datatype='integer' name='[age]' role='measure' type='quantitative' />
+      <column caption='City Or County' datatype='string' name='[city_or_county]' role='dimension' semantic-role='[City].[Name]' type='nominal' />
+      <column caption='Class Age Group' datatype='string' name='[class_age_group]' role='dimension' type='nominal' />
+      <column caption='Class Stolen' datatype='string' name='[class_stolen]' role='dimension' type='nominal' />
+      <column caption='Class Type' datatype='string' name='[class_type]' role='dimension' type='nominal' />
+      <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+      <column caption='Day' datatype='integer' name='[day]' role='dimension' type='quantitative' />
+      <column aggregation='Sum' caption='Dim Date Id (Dim Date)' datatype='integer' name='[dim_date_id (dim_date)]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Date Id' datatype='integer' name='[dim_date_id]' role='dimension' type='ordinal' />
+      <column caption='Dim Gun Id' datatype='integer' name='[dim_gun_id]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Gun Stolen Id (Dim Gun Stolen)' datatype='integer' name='[dim_gun_stolen_id (dim_gun_stolen)]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Gun Stolen Id' datatype='integer' name='[dim_gun_stolen_id]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Gun Type Id (Dim Gun Type)' datatype='integer' name='[dim_gun_type_id (dim_gun_type)]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Gun Type Id' datatype='integer' name='[dim_gun_type_id]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Incident Info Id (Dim Incident Info)' datatype='integer' name='[dim_incident_info_id (dim_incident_info)]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Incident Info Id' datatype='integer' name='[dim_incident_info_id]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Location Id (Dim Location)' datatype='integer' name='[dim_location_id (dim_location)]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Location Id' datatype='integer' name='[dim_location_id]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Participant Age Group Id (Dim Participant Age Group)' datatype='integer' name='[dim_participant_age_group_id (dim_participant_age_group)]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim Participant Age Group Id' datatype='integer' name='[dim_participant_age_group_id]' role='dimension' type='ordinal' />
+      <column caption='Dim Participant Id' datatype='integer' name='[dim_participant_id]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim State District Id (Dim State District)' datatype='integer' name='[dim_state_district_id (dim_state_district)]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Dim State District Id' datatype='integer' name='[dim_state_district_id]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Facts Gun Incident Incident Id (Dim Participant)' datatype='integer' name='[facts_gun_incident_incident_id (dim_participant)]' role='dimension' type='ordinal' />
+      <column aggregation='Sum' caption='Facts Gun Incident Incident Id' datatype='integer' name='[facts_gun_incident_incident_id]' role='dimension' type='ordinal' />
+      <column caption='Gender' datatype='string' name='[gender]' role='dimension' type='nominal' />
+      <column caption='House' datatype='integer' name='[house]' role='measure' type='quantitative' />
+      <column caption='Incident Characteristics' datatype='string' name='[incident_characteristics]' role='dimension' type='nominal' />
+      <column caption='Incident Id' datatype='integer' name='[incident_id]' role='dimension' type='ordinal' />
+      <column aggregation='Avg' caption='Latitude' datatype='real' name='[latitude]' role='measure' semantic-role='[Geographical].[Latitude]' type='quantitative' />
+      <column caption='Location Description' datatype='string' name='[location_description]' role='dimension' type='nominal' />
+      <column aggregation='Avg' caption='Longitude' datatype='real' name='[longitude]' role='measure' semantic-role='[Geographical].[Longitude]' type='quantitative' />
+      <column caption='Month' datatype='integer' name='[month]' role='dimension' type='quantitative' />
+      <column caption='N Guns Involved' datatype='integer' name='[n_guns_involved]' role='measure' type='quantitative' />
+      <column caption='N Injured' datatype='integer' name='[n_injured]' role='measure' type='quantitative' />
+      <column caption='N Killed' datatype='integer' name='[n_killed]' role='measure' type='quantitative' />
+      <column caption='Name' datatype='string' name='[name]' role='dimension' type='nominal' />
+      <column caption='Notes' datatype='string' name='[notes]' role='dimension' type='nominal' />
+      <column caption='Relationship' datatype='string' name='[relationship]' role='dimension' type='nominal' />
+      <column caption='Senate' datatype='integer' name='[senate]' role='measure' type='quantitative' />
+      <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column caption='Status' datatype='string' name='[status]' role='dimension' type='nominal' />
+      <column caption='Type' datatype='string' name='[type]' role='dimension' type='nominal' />
+      <column caption='Year' datatype='integer' name='[year]' role='dimension' type='quantitative' />
+      <column-instance column='[class_age_group]' derivation='None' name='[none:class_age_group:nk]' pivot='key' type='nominal' />
+      <column-instance column='[gender]' derivation='None' name='[none:gender:nk]' pivot='key' type='nominal' />
+      <layout _.fcp.SchemaViewerObjectModel.false...dim-percentage='0.5' _.fcp.SchemaViewerObjectModel.false...measure-percentage='0.4' dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <style>
+        <style-rule element='mark'>
+          <encoding attr='color' field='[none:gender:nk]' type='palette'>
+            <map to='#4e79a7'>
+              <bucket>%null%</bucket>
+            </map>
+            <map to='#76b7b2'>
+              <bucket>&quot;NULL&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;Male&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;Female&quot;</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:class_age_group:nk]' type='palette'>
+            <map to='#4e79a7'>
+              <bucket>%null%</bucket>
+            </map>
+            <map to='#76b7b2'>
+              <bucket>&quot;Teen 12-17&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;Child 0-11&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;Adult 18+&quot;</bucket>
+            </map>
+          </encoding>
+        </style-rule>
+      </style>
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Estados Unidos&quot;' />
+        <semantic-value key='[State].[Name]' value='%null%' />
+      </semantic-values>
+      <date-options start-of-week='monday' />
+      <field-sort-info field-sort-order='descending' field-sort-order-type='alphabetical-order' />
+      <_.fcp.ObjectModelEncapsulateLegacy.true...object-graph>
+        <objects>
+          <object caption='dim_date' id='dim_date_36FD0174498143C88E9FF1744BED622E'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_date' table='[dim_date]' type='table' />
+            </properties>
+          </object>
+          <object caption='dim_gun' id='dim_gun_401B5B5B47D340F48E498DC3CF705DBE'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_gun' table='[dim_gun]' type='table' />
+            </properties>
+          </object>
+          <object caption='dim_gun_stolen' id='dim_gun_stolen_443AC35CC05C4AAEAEB17EBB3A1C7DB9'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_gun_stolen' table='[dim_gun_stolen]' type='table' />
+            </properties>
+          </object>
+          <object caption='dim_gun_type' id='dim_gun_type_5489F6ACF53046419D8CF235A983681E'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_gun_type' table='[dim_gun_type]' type='table' />
+            </properties>
+          </object>
+          <object caption='dim_incident_info' id='dim_incident_info_02333902AD4F43E7ACCE2B2C8EA040EE'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_incident_info' table='[dim_incident_info]' type='table' />
+            </properties>
+          </object>
+          <object caption='dim_location' id='dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_location' table='[dim_location]' type='table' />
+            </properties>
+          </object>
+          <object caption='dim_participant' id='dim_participant_29590ECB64994B8EA85FCE99881DADE6'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_participant' table='[dim_participant]' type='table' />
+            </properties>
+          </object>
+          <object caption='dim_participant_age_group' id='dim_participant_age_group_118E8AC3930C4DEB9C852C4F3A947FDA'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_participant_age_group' table='[dim_participant_age_group]' type='table' />
+            </properties>
+          </object>
+          <object caption='dim_state_district' id='dim_state_district_1D2914D6DFF2488B845675883C335142'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='dim_state_district' table='[dim_state_district]' type='table' />
+            </properties>
+          </object>
+          <object caption='facts_gun_incident' id='facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901'>
+            <properties context=''>
+              <relation connection='mysql.1lw2veu07jrv3f1ehnowk1efbu9l' name='facts_gun_incident' table='[facts_gun_incident]' type='table' />
+            </properties>
+          </object>
+        </objects>
+        <relationships>
+          <relationship>
+            <expression op='='>
+              <expression op='[dim_date_id]' />
+              <expression op='[dim_date_id (dim_date)]' />
+            </expression>
+            <first-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-guaranteed-value='true' guaranteed-value='true' object-id='facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='dim_date_36FD0174498143C88E9FF1744BED622E' unique-key='true' />
+          </relationship>
+          <relationship>
+            <expression op='='>
+              <expression op='[incident_id]' />
+              <expression op='[facts_gun_incident_incident_id]' />
+            </expression>
+            <first-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901' unique-key='true' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-guaranteed-value='true' guaranteed-value='true' object-id='dim_gun_401B5B5B47D340F48E498DC3CF705DBE' />
+          </relationship>
+          <relationship>
+            <expression op='='>
+              <expression op='[dim_gun_stolen_id]' />
+              <expression op='[dim_gun_stolen_id (dim_gun_stolen)]' />
+            </expression>
+            <first-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-guaranteed-value='true' guaranteed-value='true' object-id='dim_gun_401B5B5B47D340F48E498DC3CF705DBE' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='dim_gun_stolen_443AC35CC05C4AAEAEB17EBB3A1C7DB9' unique-key='true' />
+          </relationship>
+          <relationship>
+            <expression op='='>
+              <expression op='[dim_gun_type_id]' />
+              <expression op='[dim_gun_type_id (dim_gun_type)]' />
+            </expression>
+            <first-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-guaranteed-value='true' guaranteed-value='true' object-id='dim_gun_401B5B5B47D340F48E498DC3CF705DBE' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='dim_gun_type_5489F6ACF53046419D8CF235A983681E' unique-key='true' />
+          </relationship>
+          <relationship>
+            <expression op='='>
+              <expression op='[dim_incident_info_id]' />
+              <expression op='[dim_incident_info_id (dim_incident_info)]' />
+            </expression>
+            <first-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-guaranteed-value='true' guaranteed-value='true' object-id='facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='dim_incident_info_02333902AD4F43E7ACCE2B2C8EA040EE' unique-key='true' />
+          </relationship>
+          <relationship>
+            <expression op='='>
+              <expression op='[dim_location_id]' />
+              <expression op='[dim_location_id (dim_location)]' />
+            </expression>
+            <first-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-guaranteed-value='true' guaranteed-value='true' object-id='facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020' unique-key='true' />
+          </relationship>
+          <relationship>
+            <expression op='='>
+              <expression op='[incident_id]' />
+              <expression op='[facts_gun_incident_incident_id (dim_participant)]' />
+            </expression>
+            <first-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901' unique-key='true' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-guaranteed-value='true' guaranteed-value='true' object-id='dim_participant_29590ECB64994B8EA85FCE99881DADE6' />
+          </relationship>
+          <relationship>
+            <expression op='='>
+              <expression op='[dim_participant_age_group_id]' />
+              <expression op='[dim_participant_age_group_id (dim_participant_age_group)]' />
+            </expression>
+            <first-end-point object-id='dim_participant_29590ECB64994B8EA85FCE99881DADE6' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='dim_participant_age_group_118E8AC3930C4DEB9C852C4F3A947FDA' unique-key='true' />
+          </relationship>
+          <relationship>
+            <expression op='='>
+              <expression op='[dim_state_district_id]' />
+              <expression op='[dim_state_district_id (dim_state_district)]' />
+            </expression>
+            <first-end-point object-id='dim_location_E0ADA1D35CD24FE3A9F9C1BF29A39020' />
+            <second-end-point _.fcp.ObjectModelRelationshipPerfOptions.true...is-db-set-unique-key='true' object-id='dim_state_district_1D2914D6DFF2488B845675883C335142' unique-key='true' />
+          </relationship>
+        </relationships>
+      </_.fcp.ObjectModelEncapsulateLegacy.true...object-graph>
+    </datasource>
+  </datasources>
+  <mapsources>
+    <mapsource name='Tableau' />
+  </mapsources>
+  <worksheets>
+    <worksheet name='incidentes/ano+mes'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Número total de incidentes por ano e mês</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='facts_gun_incident+ (gun_violence)' name='federated.0njytps0de5swt10ehx0y1wjw3jz' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0njytps0de5swt10ehx0y1wjw3jz'>
+            <_.fcp.ObjectModelTableType.false...column caption='facts_gun_incident' datatype='integer' name='[__tableau_internal_object_id__].[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]' role='measure' type='quantitative' />
+            <column-instance column='[__tableau_internal_object_id__].[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]' derivation='Count' name='[__tableau_internal_object_id__].[cnt:facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901:qk]' pivot='key' type='quantitative' />
+            <_.fcp.ObjectModelTableType.true...column caption='facts_gun_incident' datatype='table' name='[__tableau_internal_object_id__].[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]' role='measure' type='quantitative' />
+            <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+            <column-instance column='[date]' derivation='Month' name='[mn:date:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[date]' derivation='Year' name='[yr:date:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <shelf-sorts>
+            <shelf-sort-v2 dimension-to-sort='[federated.0njytps0de5swt10ehx0y1wjw3jz].[mn:date:ok]' direction='ASC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.0njytps0de5swt10ehx0y1wjw3jz].[mn:date:ok]' shelf='rows' />
+          </shelf-sorts>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='rows' value='false' />
+            <format attr='display-field-labels' scope='cols' value='false' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[__tableau_internal_object_id__].[cnt:facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901:qk]' />
+            </encodings>
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Mês:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0njytps0de5swt10ehx0y1wjw3jz].[mn:date:ok]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Ano:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0njytps0de5swt10ehx0y1wjw3jz].[yr:date:ok]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Número total de incidentes:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0njytps0de5swt10ehx0y1wjw3jz].[__tableau_internal_object_id__].[cnt:facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+          </pane>
+        </panes>
+        <rows>[federated.0njytps0de5swt10ehx0y1wjw3jz].[mn:date:ok]</rows>
+        <cols>[federated.0njytps0de5swt10ehx0y1wjw3jz].[yr:date:ok]</cols>
+      </table>
+      <simple-id uuid='{AE29F4A2-BC6B-43C6-82E9-F2398DC84B71}' />
+    </worksheet>
+    <worksheet name='incidentes/estado'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Número total de incidentes por estado</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='facts_gun_incident+ (gun_violence)' name='federated.0njytps0de5swt10ehx0y1wjw3jz' />
+          </datasources>
+          <mapsources>
+            <mapsource name='Tableau' />
+          </mapsources>
+          <datasource-dependencies datasource='federated.0njytps0de5swt10ehx0y1wjw3jz'>
+            <_.fcp.ObjectModelTableType.false...column caption='facts_gun_incident' datatype='integer' name='[__tableau_internal_object_id__].[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]' role='measure' type='quantitative' />
+            <column-instance column='[__tableau_internal_object_id__].[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]' derivation='Count' name='[__tableau_internal_object_id__].[cnt:facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901:qk]' pivot='key' type='quantitative' />
+            <_.fcp.ObjectModelTableType.true...column caption='facts_gun_incident' datatype='table' name='[__tableau_internal_object_id__].[facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901]' role='measure' type='quantitative' />
+            <column-instance column='[state]' derivation='None' name='[none:state:nk]' pivot='key' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='map'>
+            <format attr='washout' value='0.0' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <lod column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:state:nk]' />
+              <color column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[__tableau_internal_object_id__].[cnt:facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901:qk]' />
+              <geometry column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[Geometry (generated)]' />
+            </encodings>
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Estado:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:state:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Número total de incidentes:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0njytps0de5swt10ehx0y1wjw3jz].[__tableau_internal_object_id__].[cnt:facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+          </pane>
+        </panes>
+        <rows>[federated.0njytps0de5swt10ehx0y1wjw3jz].[Latitude (generated)]</rows>
+        <cols>[federated.0njytps0de5swt10ehx0y1wjw3jz].[Longitude (generated)]</cols>
+      </table>
+      <simple-id uuid='{ACBDB72F-01F3-4BF7-B57F-107F75DB1E5C}' />
+    </worksheet>
+    <worksheet name='suspeitos/faixa_etaria'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Número de suspeitos por faixa etária</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='facts_gun_incident+ (gun_violence)' name='federated.0njytps0de5swt10ehx0y1wjw3jz' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0njytps0de5swt10ehx0y1wjw3jz'>
+            <column caption='Class Age Group' datatype='string' name='[class_age_group]' role='dimension' type='nominal' />
+            <column-instance column='[type]' derivation='Count' name='[cnt:type:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[class_age_group]' derivation='None' name='[none:class_age_group:nk]' pivot='key' type='nominal' />
+            <column-instance column='[type]' derivation='None' name='[none:type:nk]' pivot='key' type='nominal' />
+            <column caption='Type' datatype='string' name='[type]' role='dimension' type='nominal' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:class_age_group:nk]'>
+            <groupfilter function='except' user:ui-domain='database' user:ui-enumeration='exclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:class_age_group:nk]' />
+              <groupfilter function='member' level='[none:class_age_group:nk]' member='%null%' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:type:nk]'>
+            <groupfilter function='member' level='[none:type:nk]' member='&quot;Subject-Suspect&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:type:nk]</column>
+            <column>[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:class_age_group:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Pie' />
+            <encodings>
+              <color column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:class_age_group:nk]' />
+              <wedge-size column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[cnt:type:qk]' />
+              <size column='[federated.0njytps0de5swt10ehx0y1wjw3jz].[cnt:type:qk]' />
+            </encodings>
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>Faixa etária:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:class_age_group:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Número de suspeitos:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.0njytps0de5swt10ehx0y1wjw3jz].[cnt:type:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{1D1B35D0-A9D8-4727-8EC5-975C0E3F5DEA}' />
+    </worksheet>
+  </worksheets>
+  <windows saved-dpi-scale-factor='1.5' source-height='44'>
+    <window class='worksheet' name='incidentes/estado'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='30'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='170'>
+            <card pane-specification-id='0' param='[federated.0njytps0de5swt10ehx0y1wjw3jz].[__tableau_internal_object_id__].[cnt:facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901:qk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:state:nk]</field>
+          </color-one-way>
+        </highlight>
+        <default-map-tool-selection tool='2' />
+      </viewpoint>
+      <simple-id uuid='{A7486010-346A-4EB2-B6C9-466E60676EA2}' />
+    </window>
+    <window class='worksheet' name='incidentes/ano+mes'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='30'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='170'>
+            <card pane-specification-id='2' param='[federated.0njytps0de5swt10ehx0y1wjw3jz].[__tableau_internal_object_id__].[cnt:facts_gun_incident_47C0B338205B4A3CAA3B3E1C8BD87901:qk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+        <highlight>
+          <color-one-way>
+            <field>[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:month:qk]</field>
+            <field>[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:year:qk]</field>
+            <field>[federated.0njytps0de5swt10ehx0y1wjw3jz].[yr:date:ok]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{3D630BC1-6394-4D33-89BB-5F5967350152}' />
+    </window>
+    <window class='worksheet' maximized='true' name='suspeitos/faixa_etaria'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='30'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='170'>
+            <card pane-specification-id='0' param='[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:class_age_group:nk]' type='color' />
+            <card pane-specification-id='0' param='[federated.0njytps0de5swt10ehx0y1wjw3jz].[cnt:type:qk]' type='size' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+        <highlight>
+          <color-one-way>
+            <field>[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:class_age_group:nk]</field>
+            <field>[federated.0njytps0de5swt10ehx0y1wjw3jz].[none:type:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{AC79FAE2-7E98-45E4-92D9-D5E64CE456A3}' />
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='incidentes/ano+mes' width='192'>
+      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
+    </thumbnail>
+    <thumbnail height='192' name='incidentes/estado' width='192'>
+      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
+      QmCC
+    </thumbnail>
+    <thumbnail height='192' name='suspeitos/faixa_etaria' width='192'>
+      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
+    </thumbnail>
+  </thumbnails>
+</workbook>
