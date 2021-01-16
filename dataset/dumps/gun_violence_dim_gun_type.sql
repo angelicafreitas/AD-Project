@@ -35,7 +35,7 @@ CREATE TABLE `dim_gun_type` (
 
 LOCK TABLES `dim_gun_type` WRITE;
 /*!40000 ALTER TABLE `dim_gun_type` DISABLE KEYS */;
-INSERT INTO `dim_gun_type` VALUES (1,'223 Rem [AR-15]'),(2,'410 gauge'),(3,'Shotgun'),(4,'12 gauge'),(5,'32 Auto'),(6,'38 Spl'),(7,'44 Mag'),(8,'10mm'),(9,'Handgun'),(10,'40 SW'),(11,'Rifle'),(12,'380 Auto'),(13,'25 Auto'),(14,'Other'),(15,'28 gauge'),(16,'9mm'),(17,'357 Mag'),(18,'7.62 [AK-47]'),(19,'22 LR'),(20,'30-06 Spr'),(21,'300 Win'),(22,'16 gauge'),(23,'Unknown'),(24,'20 gauge'),(25,'45 Auto'),(26,'30-30 Win'),(27,'308 Win');
+INSERT INTO `dim_gun_type` VALUES (1,'30-30 Win'),(2,'10mm'),(3,'223 Rem [AR-15]'),(4,'410 gauge'),(5,'45 Auto'),(6,'Shotgun'),(7,'7.62 [AK-47]'),(8,'12 gauge'),(9,'20 gauge'),(10,'308 Win'),(11,'28 gauge'),(12,'Handgun'),(13,'380 Auto'),(14,'30-06 Spr'),(15,'357 Mag'),(16,'22 LR'),(17,'44 Mag'),(18,'Other'),(19,'300 Win'),(20,'Unknown'),(21,'Rifle'),(22,'9mm'),(23,'32 Auto'),(24,'16 gauge'),(25,'25 Auto'),(26,'38 Spl'),(27,'40 SW');
 /*!40000 ALTER TABLE `dim_gun_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-16 13:19:01
+-- Dump completed on 2021-01-16 17:34:48

@@ -92,7 +92,7 @@ queryProc = """
 cursor.execute(queryProc)
 
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS `gun_violence`.`aux` (
+CREATE TEMPORARY TABLE IF NOT EXISTS `gun_violence`.`aux` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `incident_id` INT NULL,
   `date` DATE NULL,
