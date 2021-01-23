@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_location` (
   `longitude` DECIMAL(13,8) NULL,
   `address` TEXT NULL,
   `location_description` TEXT NULL,
-  `dim_state_district_id` INT NULL,
+  `dim_state_district_id` INT NOT NULL,
   PRIMARY KEY (`dim_location_id`),
   INDEX `fk_dim_location_dim_state_district1_idx` (`dim_state_district_id` ASC) VISIBLE,
   CONSTRAINT `fk_dim_location_dim_state_district1`
@@ -128,15 +128,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_gun` (
   `dim_gun_id` INT NOT NULL AUTO_INCREMENT,
-  `facts_gun_incident_incident_id` INT NOT NULL,
+  `facts_gun_incident_id` INT NOT NULL,
   `dim_gun_stolen_id` INT NOT NULL,
   `dim_gun_type_id` INT NOT NULL,
   PRIMARY KEY (`dim_gun_id`),
-  INDEX `fk_dim_gun_facts_gun_incident1_idx` (`facts_gun_incident_incident_id` ASC) VISIBLE,
+  INDEX `fk_dim_gun_facts_gun_incident1_idx` (`facts_gun_incident_id` ASC) VISIBLE,
   INDEX `fk_dim_gun_dim_gun_stolen1_idx` (`dim_gun_stolen_id` ASC) VISIBLE,
   INDEX `fk_dim_gun_dim_gun_type1_idx` (`dim_gun_type_id` ASC) VISIBLE,
   CONSTRAINT `fk_dim_gun_facts_gun_incident1`
-    FOREIGN KEY (`facts_gun_incident_incident_id`)
+    FOREIGN KEY (`facts_gun_incident_id`)
     REFERENCES `gun_violence`.`facts_gun_incident` (`incident_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -173,19 +173,19 @@ CREATE TABLE IF NOT EXISTS `gun_violence`.`dim_participant` (
   `relationship` VARCHAR(45) NULL,
   `status` VARCHAR(45) NULL,
   `type` VARCHAR(45) NULL,
-  `dim_participant_age_group_id` INT NULL,
+  `dim_participant_age_group_id` INT NOT NULL,
   `age` INT NULL,
-  `facts_gun_incident_incident_id` INT NOT NULL,
+  `facts_gun_incident_id` INT NOT NULL,
   PRIMARY KEY (`dim_participant_id`),
   INDEX `fk_dim_participant_dim_participant_age1_idx` (`dim_participant_age_group_id` ASC) VISIBLE,
-  INDEX `fk_dim_participant_facts_gun_incident1_idx` (`facts_gun_incident_incident_id` ASC) VISIBLE,
+  INDEX `fk_dim_participant_facts_gun_incident1_idx` (`facts_gun_incident_id` ASC) VISIBLE,
   CONSTRAINT `fk_dim_participant_dim_participant_age1`
     FOREIGN KEY (`dim_participant_age_group_id`)
     REFERENCES `gun_violence`.`dim_participant_age_group` (`dim_participant_age_group_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_dim_participant_facts_gun_incident1`
-    FOREIGN KEY (`facts_gun_incident_incident_id`)
+    FOREIGN KEY (`facts_gun_incident_id`)
     REFERENCES `gun_violence`.`facts_gun_incident` (`incident_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

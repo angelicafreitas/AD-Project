@@ -30,7 +30,7 @@ def insert_dim_gun(cursor, stolen_gun, type_gun):
   cursor.execute(f'select dim_gun_stolen_id from gun_violence.dim_gun_stolen where class_stolen="{stolen_gun}";')
   id_gun_stolen, = cursor.fetchone()
   
-  cursor.execute(f'INSERT INTO gun_violence.dim_gun(facts_gun_incident_incident_id,dim_gun_stolen_id,dim_gun_type_id) VALUES({incident_id},{id_gun_stolen},{id_gun_type});')
+  cursor.execute(f'INSERT INTO gun_violence.dim_gun(facts_gun_incident_id,dim_gun_stolen_id,dim_gun_type_id) VALUES({incident_id},{id_gun_stolen},{id_gun_type});')
 
 def to_dict(string, separator,scn_separator):
   ret = {}
@@ -136,7 +136,7 @@ print(f'Handling the dataset...')
 for row in range(1,rows):
     
   #Some ids weren't numbers and the date needs to be a date
-  if sheet.cell_type(row,0)==2  and sheet.cell_type(row,1)==3 and not(re.search("-[0-9].*",str(sheet.cell_value(row,17)))):
+  if sheet.cell_type(row,0)==2  and sheet.cell_type(row,1)==3 and not(re.search("-[0-9].*",str(sheet.cell_value(row,17)))) and not(re.search("District of Columbia",sheet.cell_value(row,2),re.IGNORECASE)):
     incident_id = int(sheet.cell_value(row,0))
     date = datetime.datetime(*xlrd.xldate_as_tuple(sheet.cell_value(row,1), book.datemode))
 
@@ -178,13 +178,13 @@ for row in range(1,rows):
 
     latitude = sheet.cell_value(row,14) if sheet.cell_value(row,14) != "" else -1
     
-    if sheet.cell_values(row,15)!="":
+    if sheet.cell_value(row,15)!="":
       location_description = sheet.cell_value(row,15).replace('"','') if sheet.cell_type(row,15)==1 and sheet.cell_type(row,15)!=3 else sheet.cell_value(row,15) 
-    else
+    else:
       location_description = "N/A"
     longitude = sheet.cell_value(row,16) if sheet.cell_value(row,16) != "" else -1
     
-    if sheet.cell_values(row,18)!="":
+    if sheet.cell_value(row,18)!="":
       if sheet.cell_type(row,18)==1:
         notes = sheet.cell_value(row,18).replace('"','')
       elif sheet.cell_type(row,18)==3:
@@ -195,7 +195,7 @@ for row in range(1,rows):
           notes = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)).split(" ")[-1])      
       else: 
         notes = sheet.cell_value(row,18)
-    else
+    else:
       notes = "N/A"  
 
     if sheet.cell_type(row,19) != 2:
@@ -442,7 +442,7 @@ while idAux <= 20000:
       else:
         id_age_group = 4
 
-      cursor.execute(f'INSERT INTO gun_violence.dim_participant (gender,name,relationship,status,type,dim_participant_age_group_id,age,facts_gun_incident_incident_id) VALUES ("{gender}","{name}","{relationship}","{status}","{ptype}",{id_age_group},{age},{incident_id});')
+      cursor.execute(f'INSERT INTO gun_violence.dim_participant (gender,name,relationship,status,type,dim_participant_age_group_id,age,facts_gun_incident_id) VALUES ("{gender}","{name}","{relationship}","{status}","{ptype}",{id_age_group},{age},{incident_id});')
 
   idAux+=1
 print("done")
