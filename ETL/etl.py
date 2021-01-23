@@ -177,7 +177,7 @@ for row in range(1,rows):
       else: 
         incident_characteristics = sheet.cell_value(row,13)
     else:
-      notes = "N/A" 
+      incident_characteristics = "N/A" 
     
     latitude = sheet.cell_value(row,14) if sheet.cell_value(row,14) != "" else -1
     
