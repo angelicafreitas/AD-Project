@@ -78,7 +78,6 @@ CREATE TABLE IF NOT EXISTS `gun_violence`.`facts_gun_incident` (
   `incident_id` INT NOT NULL,
   `n_killed` INT NULL,
   `n_injured` INT NULL,
-  `n_guns_involved` INT NULL,
   `dim_date_id` INT NOT NULL,
   `dim_incident_info_id` INT NOT NULL,
   `dim_location_id` INT NOT NULL,

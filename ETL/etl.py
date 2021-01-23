@@ -107,7 +107,6 @@ CREATE TEMPORARY TABLE IF NOT EXISTS `gun_violence`.`aux` (
   `latitude` DECIMAL(13,8) NULL,
   `location_description` TEXT NULL,
   `longitude` TEXT NULL,
-  `n_guns_involved` INT NULL,
   `notes` TEXT NULL,
   `participant_age` TEXT NULL,
   `participant_age_group` TEXT NULL,
@@ -160,9 +159,9 @@ for row in range(1,rows):
     state = sheet.cell_value(row,2)
     city_or_county = sheet.cell_value(row,3)
 
-    address = sheet.cell_value(row,4).replace('"','') if sheet.cell_type(row,4)==1 else ""
-    n_killed = int(sheet.cell_value(row,5)) if sheet.cell_value(row,5) != "" else "NULL" 
-    n_injured = int(sheet.cell_value(row,6)) if sheet.cell_value(row,6) != "" else "NULL"
+    address = sheet.cell_value(row,4).replace('"','') if sheet.cell_type(row,4)==1 else "N/A"
+    n_killed = int(sheet.cell_value(row,5)) if sheet.cell_value(row,5) != "" else -1 
+    n_injured = int(sheet.cell_value(row,6)) if sheet.cell_value(row,6) != "" else -1
     gun_stolen = sheet.cell_value(row,11)
     gun_type = sheet.cell_value(row,12)
     
@@ -177,24 +176,28 @@ for row in range(1,rows):
     else: 
       incident_characteristics = sheet.cell_value(row,13)
 
-    latitude = sheet.cell_value(row,14) if sheet.cell_value(row,14) != "" else "NULL" 
+    latitude = sheet.cell_value(row,14) if sheet.cell_value(row,14) != "" else -1
     
-    location_description = sheet.cell_value(row,15).replace('"','') if sheet.cell_type(row,15)==1 and sheet.cell_type(row,15)!=3 else sheet.cell_value(row,15) 
+    if sheet.cell_values(row,15)!="":
+      location_description = sheet.cell_value(row,15).replace('"','') if sheet.cell_type(row,15)==1 and sheet.cell_type(row,15)!=3 else sheet.cell_value(row,15) 
+    else
+      location_description = "N/A"
+    longitude = sheet.cell_value(row,16) if sheet.cell_value(row,16) != "" else -1
     
-    longitude = sheet.cell_value(row,16) if sheet.cell_value(row,16) != "" else "NULL"
-    n_guns_involved = int(sheet.cell_value(row,17)) if sheet.cell_value(row,17) != "" else "NULL"
-    
-    if sheet.cell_type(row,18)==1:
-      notes = sheet.cell_value(row,18).replace('"','')
-    elif sheet.cell_type(row,18)==3:
-      x = re.search("00:00:00",str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)))
-      if x:
-        notes = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)).split(" ")[0])
-      else:
-        notes = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)).split(" ")[-1])      
-    else: 
-      notes = sheet.cell_value(row,18)
-      
+    if sheet.cell_values(row,18)!="":
+      if sheet.cell_type(row,18)==1:
+        notes = sheet.cell_value(row,18).replace('"','')
+      elif sheet.cell_type(row,18)==3:
+        x = re.search("00:00:00",str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)))
+        if x:
+          notes = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)).split(" ")[0])
+        else:
+          notes = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,18), book.datemode)).split(" ")[-1])      
+      else: 
+        notes = sheet.cell_value(row,18)
+    else
+      notes = "N/A"  
+
     if sheet.cell_type(row,19) != 2:
       if sheet.cell_type(row,19) == 3:
         x = sheet.cell_value(row,19) # a float
@@ -209,8 +212,8 @@ for row in range(1,rows):
     participant_relationship = sheet.cell_value(row,23)
     participant_status = sheet.cell_value(row,24)
     participant_type = sheet.cell_value(row,25)
-    state_house_district = int(sheet.cell_value(row,27)) if sheet.cell_type(row,27) == 2 else "NULL" 
-    state_senate_district  = int(sheet.cell_value(row,28)) if sheet.cell_type(row,28) == 2 else "NULL" 
+    state_house_district = int(sheet.cell_value(row,27)) if sheet.cell_type(row,27) == 2 else -1 
+    state_senate_district  = int(sheet.cell_value(row,28)) if sheet.cell_type(row,28) == 2 else -1 
 
     
     if gun_type != "":
@@ -225,12 +228,11 @@ for row in range(1,rows):
           type = gun.split(":")[-1]
           gun_type_set.add(type)
 
-    
     cursor.execute(f' INSERT INTO gun_violence.aux (\n'
       f'incident_id, date, state, city_or_county, address, n_killed,\n'
       f'n_injured, gun_stolen, gun_type, incident_characteristics,\n'
       f'latitude, location_description, longitude,\n'
-      f'n_guns_involved, notes, participant_age,\n'
+      f'notes, participant_age,\n'
       f'participant_age_group, participant_gender,\n'
       f'participant_name, participant_relationship,\n'
       f'participant_status, participant_type,\n'
@@ -239,7 +241,7 @@ for row in range(1,rows):
       f'("{incident_id}", "{date}", "{state}", "{city_or_county}", "{address}", {n_killed},\n'
       f'{n_injured}, "{gun_stolen}", "{gun_type}", "{incident_characteristics}",\n'
       f'{latitude}, "{location_description}", {longitude},\n'
-      f'{n_guns_involved}, "{notes}", "{participant_age}",\n'
+      f'"{notes}", "{participant_age}",\n'
       f'"{participant_age_group}", "{participant_gender}",\n'
       f'"{participant_name}", "{participant_relationship}",\n'
       f'"{participant_status}", "{participant_type}",\n'
@@ -261,6 +263,7 @@ print("Populating dim_participant_age_group...")
 cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (1,'Adult 18+');")
 cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (2,'Child 0-11');")
 cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (3,'Teen 12-17');")
+cursor.execute("insert into dim_participant_age_group (dim_participant_age_group_id,class_age_group) VALUES (4,'N/A');")
 print("done")
 
 print("---------------------------------------------")
@@ -307,8 +310,8 @@ cursor=cnx.cursor()
 print("---------------------------------------------")
 print("Populating facts_gun_incident...")
 cursor.execute("""
-    INSERT INTO facts_gun_incident (incident_id, n_killed, n_injured, n_guns_involved, dim_date_id, dim_incident_info_id, dim_location_id)
-    SELECT incident_id, n_killed, n_injured, n_guns_involved, t1.dim_date_id, incident_id, incident_id
+    INSERT INTO facts_gun_incident (incident_id, n_killed, n_injured, dim_date_id, dim_incident_info_id, dim_location_id)
+    SELECT incident_id, n_killed, n_injured, t1.dim_date_id, incident_id, incident_id
     FROM gun_violence.aux t
     LEFT JOIN dim_date t1
     ON t.date=t1.date
@@ -423,21 +426,21 @@ while idAux <= 20000:
       cursor.execute(f'select incident_id from aux where id={idAux};')
       incident_id, = cursor.fetchone()
 
-      gender = genders[str(i)] if str(i) in genders else "NULL"
-      name = names[str(i)] if str(i) in names else "NULL"
-      relationship = relationships[str(i)] if str(i) in relationships else "NULL"
-      status = statuss[str(i)] if str(i) in statuss else "NULL"
-      ptype = types[str(i)] if str(i) in types else "NULL"
-      age = ages[str(i)] if str(i) in ages else "NULL"
-      age_group = age_groups[str(i)] if str(i) in age_groups else "NULL"      
+      gender = genders[str(i)] if str(i) in genders else "N/A"
+      name = names[str(i)] if str(i) in names else "N/A"
+      relationship = relationships[str(i)] if str(i) in relationships else "N/A"
+      status = statuss[str(i)] if str(i) in statuss else "N/A"
+      ptype = types[str(i)] if str(i) in types else "N/A"
+      age = ages[str(i)] if str(i) in ages else -1
+      age_group = age_groups[str(i)] if str(i) in age_groups else "N/A"      
 
       # para buscar id age group
-      if age_group != "NULL":
+      if age_group != "N/A":
         cursor.execute(f'select dim_participant_age_group_id from dim_participant_age_group where class_age_group="{age_group}";')
         id_age_group, = cursor.fetchone()
 
       else:
-        id_age_group = "NULL"
+        id_age_group = 4
 
       cursor.execute(f'INSERT INTO gun_violence.dim_participant (gender,name,relationship,status,type,dim_participant_age_group_id,age,facts_gun_incident_incident_id) VALUES ("{gender}","{name}","{relationship}","{status}","{ptype}",{id_age_group},{age},{incident_id});')
 
