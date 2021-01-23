@@ -165,17 +165,20 @@ for row in range(1,rows):
     gun_stolen = sheet.cell_value(row,11)
     gun_type = sheet.cell_value(row,12)
     
-    if sheet.cell_type(row,13)==1:
-      incident_characteristics = sheet.cell_value(row,13).replace('"','')
-    elif sheet.cell_type(row,13)==3:
-      x = re.search("00:00:00",str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)))
-      if x:
-        incident_characteristics = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)).split(" ")[0])
-      else:
-        incident_characteristics = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)).split(" ")[-1])      
-    else: 
-      incident_characteristics = sheet.cell_value(row,13)
-
+    if sheet.cell_value(row,13)!="":
+      if sheet.cell_type(row,13)==1:
+        incident_characteristics = sheet.cell_value(row,13).replace('"','')
+      elif sheet.cell_type(row,13)==3:
+        x = re.search("00:00:00",str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)))
+        if x:
+          incident_characteristics = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)).split(" ")[0])
+        else:
+          incident_characteristics = (str(xlrd.xldate_as_datetime(sheet.cell_value(row,13), book.datemode)).split(" ")[-1])      
+      else: 
+        incident_characteristics = sheet.cell_value(row,13)
+    else:
+      notes = "N/A" 
+    
     latitude = sheet.cell_value(row,14) if sheet.cell_value(row,14) != "" else -1
     
     if sheet.cell_value(row,15)!="":
