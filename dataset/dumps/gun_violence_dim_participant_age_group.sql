@@ -35,7 +35,7 @@ CREATE TABLE `dim_participant_age_group` (
 
 LOCK TABLES `dim_participant_age_group` WRITE;
 /*!40000 ALTER TABLE `dim_participant_age_group` DISABLE KEYS */;
-INSERT INTO `dim_participant_age_group` VALUES (1,'Adult 18+'),(2,'Child 0-11'),(3,'Teen 12-17');
+INSERT INTO `dim_participant_age_group` VALUES (1,'Adult 18+'),(2,'Child 0-11'),(3,'Teen 12-17'),(4,'N/A');
 /*!40000 ALTER TABLE `dim_participant_age_group` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -48,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-16 17:34:46
+-- Dump completed on 2021-01-24  9:32:03
